@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SliderProducts from 'components/SliderProducts';
 
 function FlyCam() {
@@ -78,13 +79,13 @@ function FlyCam() {
         <SliderProducts data={dataFlyCam} />
       </div>
       <div className="flycam__view-all">
-        <a href="#" className="cta">
+        <Link to="/camera-list" className="cta">
           <span>View all</span>
           <svg width="13px" height="10px" viewBox="0 0 13 10">
             <path d="M1,5 L11,5" />
             <polyline points="8 1 12 5 8 9" />
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );

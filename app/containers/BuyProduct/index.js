@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Rate, Button, Tabs } from 'antd';
 import InputSpinner from 'react-bootstrap-input-spinner';
 import Description from './description';
+import Evaluate from './Evaluate';
 
 function BuyProduct() {
   const { TabPane } = Tabs;
@@ -130,11 +131,8 @@ function BuyProduct() {
             <TabPane tab="Description" key="1">
               <Description />
             </TabPane>
-            <TabPane tab="Specifications" key="2">
-              Content of card tab 2
-            </TabPane>
-            <TabPane tab="Evaluate (4)" key="3">
-              Content of card tab 3
+            <TabPane tab="Evaluate (4)" key="2">
+              <Evaluate />
             </TabPane>
           </Tabs>
         </div>

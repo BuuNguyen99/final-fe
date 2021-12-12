@@ -1,5 +1,6 @@
 import React from 'react';
 import SliderProducts from 'components/SliderProducts';
+import { Link } from 'react-router-dom';
 
 function Laptop() {
   const dataLaptop = [
@@ -79,13 +80,13 @@ function Laptop() {
         <SliderProducts data={dataLaptop} />
       </div>
       <div className="laptop__view-all">
-        <a href="#" className="cta">
+        <Link to="/laptop-list" className="cta">
           <span>View all</span>
           <svg width="13px" height="10px" viewBox="0 0 13 10">
             <path d="M1,5 L11,5" />
             <polyline points="8 1 12 5 8 9" />
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );

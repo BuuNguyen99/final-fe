@@ -9,6 +9,10 @@ import HomePage from 'containers/HomePage';
 import Blog from 'containers/Blog';
 import ContactUs from 'containers/ContactUs';
 import BuyProduct from 'containers/BuyProduct';
+import PageProductListLapTop from 'containers/PageProductListLaptop';
+import PageProductListSmartPhone from 'containers/PageProductListSmartPhone';
+import PageProductListSmartWatch from 'containers/PageProductListSmartWatch';
+import PageProductListCamera from 'containers/PageProductListCamera';
 
 export default function MasterLayout() {
   return (
@@ -25,6 +29,16 @@ export default function MasterLayout() {
             <Route path="/blog" component={Blog} />
             <Route path="/contact-us" component={ContactUs} />
             <Route path="/products/:id" component={BuyProduct} />
+            <Route path="/laptop-list" component={PageProductListLapTop} />
+            <Route
+              path="/smart-phone-list"
+              component={PageProductListSmartPhone}
+            />
+            <Route
+              path="/smart-watch-list"
+              component={PageProductListSmartWatch}
+            />
+            <Route path="/camera-list" component={PageProductListCamera} />
           </Switch>
         </div>
         <Footer />
