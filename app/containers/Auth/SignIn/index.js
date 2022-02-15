@@ -16,7 +16,7 @@ import { makeSelectLoginAccount } from 'containers/Auth/selectors';
 
 const key = 'auth';
 
-function SignIn({ dataUser, onLoginAccount }) {
+function SignIn({ dataUser, onLoginAccount, setIsForgotPassword }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -81,7 +81,9 @@ function SignIn({ dataUser, onLoginAccount }) {
         }`}
       />
       <div className="invalid-feedback">{errors.password?.message}</div>
-      <a href="#">Forgot your password?</a>
+      <a href onClick={() => setIsForgotPassword(true)}>
+        Forgot your password?
+      </a>
       <button type="submit" className={`${dataUser?.isFetching && 'disabled'}`}>
         {dataUser?.isFetching && (
           <Spinner color="light" size="sm">

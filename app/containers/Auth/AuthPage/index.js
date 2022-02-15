@@ -2,10 +2,11 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import SignIn from 'containers/Auth/SignIn';
 import SignUp from 'containers/Auth/SignUp';
+import ForgotPassword from 'containers/Auth/ForgotPassword';
 
 function AuthPage() {
   const [activeClass, setActiveClass] = useState(false);
-
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const onActiveClass = bool => {
     setActiveClass(bool);
   };
@@ -20,7 +21,11 @@ function AuthPage() {
           <SignUp />
         </div>
         <div className="form-container sign-in-container">
-          <SignIn />
+          {!isForgotPassword ? (
+            <SignIn setIsForgotPassword={setIsForgotPassword} />
+          ) : (
+            <ForgotPassword setIsForgotPassword={setIsForgotPassword} />
+          )}
         </div>
         <div className="overlay-container">
           <div className="overlay">

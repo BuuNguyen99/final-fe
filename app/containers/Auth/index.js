@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import AuthPage from './AuthPage';
+import ResetPassword from './ResetPassword';
 
 function Auth() {
   useEffect(() => {
@@ -14,6 +15,7 @@ function Auth() {
     <div>
       <Switch>
         <Route path="/auth/login" component={AuthPage} />
+        <Route path="/auth/reset-password" component={ResetPassword} />
         <Redirect from="/auth" exact to="/auth/login" />
         <Redirect to="/auth/login" />
       </Switch>
