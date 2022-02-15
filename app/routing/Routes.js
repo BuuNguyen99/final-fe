@@ -1,13 +1,29 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { ENDPOINT } from 'shared/constants/endpoint';
+import { CookiesStorage } from 'shared/configs/cookie';
 import Auth from 'containers/Auth';
 import MasterLayout from 'containers/MasterLayout';
+const { ROUTING } = ENDPOINT;
 
 function Routes() {
+  const isAuthorized = CookiesStorage.authenticated();
+
   return (
     <Switch>
-      <Route path="/auth/login" component={Auth} />
-      <Route path="/" component={MasterLayout} />
+      {!isAuthorized ? (
+        <Route>
+          <Auth />
+        </Route>
+      ) : (
+        <Redirect from={ROUTING.AUTH} to="/" />
+      )}
+
+      {!isAuthorized ? (
+        <Redirect to="/auth/login" />
+      ) : (
+        <Route path="/" component={MasterLayout} />
+      )}
     </Switch>
   );
 }

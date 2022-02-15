@@ -113,3 +113,11 @@
     }
   }
 }
+
+.form-control.is-invalid {
+  border-color: #f1416c !important;
+}
+
+.invalid-feedback {
+  margin-top: 0 !important;
+}

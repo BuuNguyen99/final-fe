@@ -20,7 +20,7 @@ function Header() {
 
   const logout = () => {
     CookiesStorage.clearData();
-    history.push('/');
+    history.push('/auth/login');
   };
 
   const content = (

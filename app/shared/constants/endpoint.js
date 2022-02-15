@@ -1,16 +1,9 @@
 export const ENDPOINT = {
   API: {
-    GET_ACCESS_TOKEN: '/v1/auth/user',
-    GET_LIST_EMPLOYEE: '/v1/employee',
-    EMPLOYEE_TYPES: '/v1/master-data/employee-types',
-    DELETE_EMPLOYEE: '/v1/employee',
-    GET_MY_PROFILE: '/v1/user/profile',
-    UPDATE_MY_PROFILE: '/v1/user/profile',
-    GET_EMPLOYEE_DETAIL: '/v1/employee',
-    UPLOAD_AVATAR: '/v1/media/avatar',
-    UPDATE_EMPLOYEE: '/v1/employee',
-    CREATE_EMPLOYEE: '/v1/employee',
-    FETCH_DATA_SLACK: '/v1/user/slack',
+    REGISTER_USER: '/api/auth/signup',
+    LOGIN_USER: '/api/auth/login',
+    FORGOT_PASSWORD: '/api/auth/password/forget',
+    RESET_PASSWORD_USER: '/api/auth/password/recovery',
   },
   ROUTING: {
     AUTH: '/auth',
