@@ -58,7 +58,7 @@ function SignIn({ dataUser, onLoginAccount }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h1>Sign in</h1>
+      <h1 className="mb-3">Sign in</h1>
       <input
         placeholder="Username"
         name="username"
