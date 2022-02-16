@@ -1,9 +1,12 @@
 export const ENDPOINT = {
   API: {
+    GET_MY_PROFILE: '/api/profile/get',
+    UPDATE_MY_PROFILE: '/api/profile/update',
     REGISTER_USER: '/api/auth/signup',
     LOGIN_USER: '/api/auth/login',
     FORGOT_PASSWORD: '/api/auth/password/forget',
     RESET_PASSWORD_USER: '/api/auth/password/recovery',
+    CHANGE_PASSWORD_USER: '/api/auth/password/change',
   },
   ROUTING: {
     AUTH: '/auth',

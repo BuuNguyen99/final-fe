@@ -8,6 +8,7 @@ import {
   LOGIN_ACCOUNT,
   FORGOT_PASSWORD_ACCOUNT,
   RESET_PASSWORD,
+  CHANGE_PASSWORD,
 } from 'containers/Auth/constants';
 
 export const initialState = {
@@ -29,6 +30,9 @@ export const initialState = {
     isFetching: false,
   },
   resetPassword: {
+    isFetching: false,
+  },
+  changePassword: {
     isFetching: false,
   },
 };
@@ -101,6 +105,15 @@ const authReducer = (state = initialState, action) =>
         break;
       case FAILURE(UPDATE_PROFILE):
         draft.updateProfile.isFetching = false;
+        break;
+      case REQUEST(CHANGE_PASSWORD):
+        draft.changePassword.isFetching = true;
+        break;
+      case SUCCESS(CHANGE_PASSWORD):
+        draft.changePassword.isFetching = false;
+        break;
+      case FAILURE(CHANGE_PASSWORD):
+        draft.changePassword.isFetching = false;
         break;
       default:
         break;

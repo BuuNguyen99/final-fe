@@ -13,6 +13,7 @@ import PageProductListLapTop from 'containers/PageProductListLaptop';
 import PageProductListSmartPhone from 'containers/PageProductListSmartPhone';
 import PageProductListSmartWatch from 'containers/PageProductListSmartWatch';
 import PageProductListCamera from 'containers/PageProductListCamera';
+import MyProfile from 'containers/MyProfile';
 
 export default function MasterLayout() {
   return (
@@ -39,6 +40,7 @@ export default function MasterLayout() {
               component={PageProductListSmartWatch}
             />
             <Route path="/camera-list" component={PageProductListCamera} />
+            <Route path="/my-profile" component={MyProfile} />
           </Switch>
         </div>
         <Footer />

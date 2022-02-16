@@ -7,6 +7,7 @@ import {
   LOGIN_ACCOUNT,
   FORGOT_PASSWORD_ACCOUNT,
   RESET_PASSWORD,
+  CHANGE_PASSWORD,
 } from 'containers/Auth/constants';
 
 export function registerAccount(data, callBack) {
@@ -57,6 +58,14 @@ export function updateProfile(dataProfile, callBack) {
   return {
     type: REQUEST(UPDATE_PROFILE),
     dataProfile,
+    callBack,
+  };
+}
+
+export function changePasswordAccount(data, callBack) {
+  return {
+    type: REQUEST(CHANGE_PASSWORD),
+    data,
     callBack,
   };
 }
