@@ -7,6 +7,7 @@ export const ENDPOINT = {
     FORGOT_PASSWORD: '/api/auth/password/forget',
     RESET_PASSWORD_USER: '/api/auth/password/recovery',
     CHANGE_PASSWORD_USER: '/api/auth/password/change',
+    ADD_PRODUCT_API: '/api/product/addProduct',
   },
   ROUTING: {
     AUTH: '/auth',

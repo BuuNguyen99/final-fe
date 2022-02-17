@@ -3,7 +3,7 @@ import React, { memo, useRef, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { BsCart2 } from 'react-icons/bs';
 import { Sticky } from 'react-sticky';
-import { AiOutlineSearch, AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineUser } from 'react-icons/ai';
 import logo from 'assets/images/logo.png';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -206,17 +206,12 @@ function Header({ onGetMyProfile }) {
             <div className="header__menu-icon">
               <ul className="icon-list">
                 <li className="icon-item">
-                  <a href="#" className="icon-link">
-                    <AiOutlineSearch className="icon icon-search1" />
-                  </a>
-                </li>
-                <li className="icon-item">
-                  <a href="#" className="icon-link">
+                  <p className="icon-link">
                     <Popover placement="bottomRight" content={content}>
                       <BsCart2 className="icon icon-user" />
                       {isAuthen && <span className="mark">3</span>}
                     </Popover>
-                  </a>
+                  </p>
                 </li>
                 <li className="icon-item">
                   <a
