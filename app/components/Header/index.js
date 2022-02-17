@@ -141,47 +141,25 @@ function Header({ onGetMyProfile }) {
                       id="menu-item-7"
                       className="menu-item menu-item-type-post_type menu-item-object-page menu-item-7"
                     >
-                      <a href="/sample-page/">Laptop & table</a>
+                      <Link to="/laptop-list">Laptop & table</Link>
                     </li>
                     <li
                       id="menu-item-14"
                       className="menu-item menu-item-type-post_type menu-item-object-page menu-item-14"
                     >
-                      <a href="/sample-page-2/">Flycam</a>
+                      <Link to="/camera-list">Flycam</Link>
                     </li>
                     <li
                       id="menu-item-14"
                       className="menu-item menu-item-type-post_type menu-item-object-page menu-item-14"
                     >
-                      <a href="/sample-page-2/">Smartphone</a>
+                      <Link to="/smart-phone-list">Smartphone</Link>
                     </li>
                     <li
                       id="menu-item-14"
                       className="menu-item menu-item-type-post_type menu-item-object-page menu-item-14"
                     >
-                      <a href="/sample-page-2/">Smartwatch</a>
-                    </li>
-                  </ul>
-                </li>
-                <li
-                  id="menu-item-16"
-                  className="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-16"
-                >
-                  <a href className="link-menu">
-                    shop
-                  </a>
-                  <ul className="sub-menu">
-                    <li
-                      id="menu-item-7"
-                      className="menu-item menu-item-type-post_type menu-item-object-page menu-item-7"
-                    >
-                      <a href="/sample-page/">Sub Page 1</a>
-                    </li>
-                    <li
-                      id="menu-item-14"
-                      className="menu-item menu-item-type-post_type menu-item-object-page menu-item-14"
-                    >
-                      <a href="/sample-page-2/">Sub Page 2</a>
+                      <Link to="/smart-watch-list">Smartwatch</Link>
                     </li>
                   </ul>
                 </li>
