@@ -1,5 +1,4 @@
 import React from 'react';
-import CarouselSell from 'components/Carousel';
 import NewShop from './NewShop';
 import UserContact from './UserContact';
 import NewProducts from './NewProducts';
@@ -11,7 +10,6 @@ import FlyCam from './Flycam';
 function HomePage() {
   return (
     <div className="home-page">
-      {/* <CarouselSell /> */}
       <NewProducts />
       <Laptop />
       <FlyCam />

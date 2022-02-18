@@ -8,6 +8,10 @@ export const ENDPOINT = {
     RESET_PASSWORD_USER: '/api/auth/password/recovery',
     CHANGE_PASSWORD_USER: '/api/auth/password/change',
     ADD_PRODUCT_API: '/api/product/addProduct',
+    GET_LIST_LAPTOP: '/api/product/getAll',
+    GET_LIST_CAMERA: '/api/product/getAll',
+    GET_LIST_SMARTWATCH: '/api/product/getAll',
+    GET_LIST_SMARTPHONE: '/api/product/getAll',
   },
   ROUTING: {
     AUTH: '/auth',
