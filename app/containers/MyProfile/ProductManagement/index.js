@@ -77,7 +77,11 @@ function ProductManagement({
             >
               Add Product
             </Button>
-            <Select style={{ width: 200 }} onChange={handleFilter}>
+            <Select
+              style={{ width: 200 }}
+              onChange={handleFilter}
+              placeholder="Select filter"
+            >
               <Option value="laptop">Laptop & Table</Option>
               <Option value="camera">Camera & Flycam</Option>
               <Option value="smartwatch">Smartwatch</Option>
