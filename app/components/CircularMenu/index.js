@@ -6,6 +6,7 @@ import {
   BsTelephonePlus,
   BsFacebook,
 } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 function CircularMenu() {
   const [active, setActive] = useState(false);
 
@@ -22,9 +23,9 @@ function CircularMenu() {
       </a>
 
       <menu className="items-wrapper">
-        <a href="#" className="menu-item icon-map">
+        <Link to="/contact-us" className="menu-item icon-map">
           <BsFillPinMapFill className="icon" />
-        </a>
+        </Link>
         <a href="#" className="menu-item icon-message">
           <BsChatDots className="icon" />
         </a>
