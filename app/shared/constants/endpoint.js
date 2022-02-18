@@ -12,6 +12,7 @@ export const ENDPOINT = {
     GET_LIST_CAMERA: '/api/product/getAll',
     GET_LIST_SMARTWATCH: '/api/product/getAll',
     GET_LIST_SMARTPHONE: '/api/product/getAll',
+    DELETE_PRODUCT_API: '/api/product/multiDelete',
   },
   ROUTING: {
     AUTH: '/auth',

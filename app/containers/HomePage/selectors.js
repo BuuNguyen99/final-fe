@@ -1,33 +1,47 @@
 import { createSelector } from 'reselect';
-import { initialState } from 'containers/Auth/reducer';
+import { initialState } from 'containers/HomePage/reducer';
 
-const selectAuth = state => state.home || initialState;
+const selectHomePage = state => state.home || initialState;
 
 const makeSelectDataLaptopHome = () =>
   createSelector(
-    selectAuth,
-    authState => authState.dataLaptop,
+    selectHomePage,
+    homeState => homeState.dataLaptop,
   );
 const makeSelectDataCameraHome = () =>
   createSelector(
-    selectAuth,
-    authState => authState.dataCamera,
+    selectHomePage,
+    homeState => homeState.dataCamera,
   );
 const makeSelectDataSmartwatchHome = () =>
   createSelector(
-    selectAuth,
-    authState => authState.dataSmartwatch,
+    selectHomePage,
+    homeState => homeState.dataSmartwatch,
   );
 const makeSelectDataSmartphoneHome = () =>
   createSelector(
-    selectAuth,
-    authState => authState.dataSmartphone,
+    selectHomePage,
+    homeState => homeState.dataSmartphone,
+  );
+
+const makeSelectDataProduct = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.dataProduct,
+  );
+
+const makeSelectDeleteProduct = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.deleteProduct,
   );
 
 export {
-  selectAuth,
+  selectHomePage,
   makeSelectDataLaptopHome,
   makeSelectDataCameraHome,
   makeSelectDataSmartwatchHome,
   makeSelectDataSmartphoneHome,
+  makeSelectDataProduct,
+  makeSelectDeleteProduct,
 };
