@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 const { Option } = Select;
 
 function FormAccount({
-  setIsAddProduct,
+  setIsAdd,
   dataAddProduct,
   onAddProductItem,
   onGetViewHomeProduct,
@@ -77,10 +77,10 @@ function FormAccount({
 
     const params = {
       page: 0,
-      size: 10,
+      size: 9999999999,
     };
     onGetViewHomeProduct(data, params);
-    setIsAddProduct(true);
+    setIsAdd(true);
     toast.success('Add Product successfully');
   };
 
@@ -210,7 +210,7 @@ function FormAccount({
             </button>
             <button
               type="button"
-              onClick={() => setIsAddProduct(true)}
+              onClick={() => setIsAdd(true)}
               className="btn btn-light float-right mx-3"
             >
               Cancel

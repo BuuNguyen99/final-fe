@@ -3,49 +3,63 @@ import 'antd/dist/antd.css';
 import { Popconfirm, Table, Typography } from 'antd';
 import { toast } from 'react-toastify';
 
-function EditableTable({
-  setPage,
-  setPageSize,
-  pageSizeLimit,
-  dataProduct,
-  onDeleteProductItem,
-}) {
+function EditableTable({ dataAccount, onDeleteProductItem }) {
   const columns = [
     {
-      title: 'Product Name',
-      dataIndex: 'title',
+      title: 'Full Name',
+      render: (_, record) => (
+        <p> {`${record?.firstname} ${record?.lastname}`}</p>
+      ),
+      width: '10%',
+    },
+    {
+      title: 'Email',
+      render: (_, record) => <p> {`${record?.account?.email} `}</p>,
       width: '15%',
     },
     {
-      title: 'Price (VND)',
-      dataIndex: 'price',
-      width: '10%',
-    },
-    {
-      title: 'Rating',
+      title: 'Username',
       dataIndex: 'averageRating',
-      width: '5%',
+      render: (_, record) => <p> {`${record?.account?.username} `}</p>,
+      width: '12%',
     },
     {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      width: '5%',
-    },
-    {
-      title: 'Category',
-      dataIndex: 'category',
+      title: 'Gender',
+      dataIndex: 'gender',
       width: '10%',
     },
     {
-      title: 'Short Description',
-      dataIndex: 'metaTitle',
-      width: '23%',
+      title: 'phone',
+      dataIndex: 'mobile',
+      width: '10%',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      width: '20%',
+    },
+    {
+      title: 'Status',
+      render: (_, record) => (
+        <>
+          <Popconfirm
+            className="mx-3"
+            title="Sure to Toggle Account?"
+            onConfirm={() => handleDelete(record.id)}
+          >
+            <Typography.Link>
+              {record?.account?.enabled ? 'Enable' : 'Disable'}
+            </Typography.Link>
+          </Popconfirm>
+        </>
+      ),
+      width: '8%',
     },
     {
       title: '',
       dataIndex: 'id',
       key: 'x',
-      width: '8%',
+      width: '10%',
       render: (_, record) => (
         <>
           <Typography.Link>Edit</Typography.Link>
@@ -74,18 +88,11 @@ function EditableTable({
     toast.success('Delete product item  Successfully');
   };
 
-  const handleChangeTable = ({ current, pageSize }) => {
-    setPage(current);
-    setPageSize(pageSize);
-  };
-
   return (
     <Table
-      onChange={handleChangeTable}
       columns={columns}
-      dataSource={dataProduct}
-      pagination={{ pageSize: pageSizeLimit }}
-      scroll={{ y: 450 }}
+      dataSource={dataAccount}
+      pagination={{ pageSize: 10 }}
     />
   );
 }

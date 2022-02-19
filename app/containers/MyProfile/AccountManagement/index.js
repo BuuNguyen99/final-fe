@@ -1,4 +1,4 @@
-import { Select, Button } from 'antd';
+import { Button } from 'antd';
 import React, { useState, memo, useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -8,46 +8,22 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import saga from 'containers/HomePage/saga';
 import reducer from 'containers/HomePage/reducer';
-import { makeSelectDataProduct } from 'containers/HomePage/selectors';
-import {
-  getViewHomeProduct,
-  deleteProductItem,
-} from 'containers/HomePage/actions';
 import EditableTable from './TableList';
 import FormAccount from './FormAccount';
-const { Option } = Select;
+import { getListAccount } from '../../HomePage/actions';
+import { makeSelectDataAccount } from '../../HomePage/selectors';
 
 const key = 'home';
 
-function AccountManagement({
-  dataAddProduct,
-  onAddProductItem,
-  dataProduct,
-  onGetViewHomeProduct,
-  onDeleteProductItem,
-}) {
+function AccountManagement({ dataAccount, onGetListAccount }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const [filterCategory, setFilterCategory] = useState('');
-  const [isAddProduct, setIsAddProduct] = useState(true);
-
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-
-  const handleFilter = filter => {
-    setFilterCategory(filter);
-  };
+  const [isAdd, setIsAdd] = useState(true);
 
   useEffect(() => {
     const data = {
-      searchFilters: [
-        {
-          property: 'category',
-          operator: 'LIKE',
-          value: filterCategory,
-        },
-      ],
+      searchFilters: [],
       sortOrder: {
         ascendingOrder: [],
         descendingOrder: [],
@@ -56,15 +32,15 @@ function AccountManagement({
     };
 
     const params = {
-      page: page - 1,
-      size: pageSize,
+      page: 0,
+      size: 999999999,
     };
-    onGetViewHomeProduct(data, params);
-  }, [filterCategory]);
+    onGetListAccount(data, params);
+  }, []);
 
   return (
     <div className="product-management">
-      {isAddProduct ? (
+      {isAdd ? (
         <>
           <div className="product-management__filter mb-5">
             <Button
@@ -73,53 +49,29 @@ function AccountManagement({
               icon={<PlusOutlined />}
               size="large"
               className="add-product"
-              onClick={() => setIsAddProduct(false)}
+              onClick={() => setIsAdd(false)}
             >
-              Add Product
+              Add Account
             </Button>
-            <Select
-              style={{ width: 200 }}
-              onChange={handleFilter}
-              placeholder="Select filter"
-            >
-              <Option value="laptop">Laptop & Table</Option>
-              <Option value="camera">Camera & Flycam</Option>
-              <Option value="smartwatch">Smartwatch</Option>
-              <Option value="smartphone">Smartphone</Option>
-            </Select>
           </div>
           <div className="product-management__table">
-            <EditableTable
-              setPage={setPage}
-              setPageSize={setPageSize}
-              pageSizeLimit={pageSize}
-              dataProduct={dataProduct?.data?.content}
-              onDeleteProductItem={onDeleteProductItem}
-            />
+            <EditableTable dataAccount={dataAccount.data?.content} />
           </div>
         </>
       ) : (
-        <FormAccount
-          setIsAddProduct={setIsAddProduct}
-          dataAddProduct={dataAddProduct}
-          onAddProductItem={onAddProductItem}
-          onGetViewHomeProduct={onGetViewHomeProduct}
-        />
+        <FormAccount setIsAdd={setIsAdd} onGetListAccount={onGetListAccount} />
       )}
     </div>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
-  dataProduct: makeSelectDataProduct(),
+  dataAccount: makeSelectDataAccount(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    onGetViewHomeProduct: (data, params) =>
-      dispatch(getViewHomeProduct(data, params)),
-    onDeleteProductItem: (id, callBack) =>
-      dispatch(deleteProductItem(id, callBack)),
+    onGetListAccount: (data, params) => dispatch(getListAccount(data, params)),
   };
 }
 

@@ -4,6 +4,7 @@ import {
   GET_LIST_VIEW_ACTION,
   GET_LIST_POPULAR_PRODUCT,
   DELETE_PRODUCT_ACTION,
+  GET_LIST_ACCOUNT,
 } from 'containers/HomePage/constants';
 
 export const initialState = {
@@ -31,6 +32,10 @@ export const initialState = {
     isFetching: false,
   },
   dataPopular: {
+    data: [],
+    isFetching: false,
+  },
+  dataAccount: {
     data: [],
     isFetching: false,
   },
@@ -119,6 +124,17 @@ const authReducer = (state = initialState, action) =>
       case FAILURE(GET_LIST_POPULAR_PRODUCT):
         draft.dataPopular.data = [];
         draft.dataPopular.isFetching = false;
+        break;
+      case REQUEST(GET_LIST_ACCOUNT):
+        draft.dataAccount.isFetching = true;
+        break;
+      case SUCCESS(GET_LIST_ACCOUNT):
+        draft.dataAccount.data = action.data;
+        draft.dataAccount.isFetching = false;
+        break;
+      case FAILURE(GET_LIST_ACCOUNT):
+        draft.dataAccount.data = [];
+        draft.dataAccount.isFetching = false;
         break;
       default:
         break;

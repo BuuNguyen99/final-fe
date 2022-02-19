@@ -14,6 +14,7 @@ export const ENDPOINT = {
     GET_LIST_SMARTPHONE: '/api/product/getAll',
     GET_LIST_POPULAR_API: '/api/product/favorite',
     DELETE_PRODUCT_API: '/api/product/multiDelete',
+    GET_LIST_ACCOUNT_API: '/api/profile/getAll',
   },
   ROUTING: {
     AUTH: '/auth',

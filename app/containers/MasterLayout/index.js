@@ -15,6 +15,7 @@ import PageProductListSmartWatch from 'containers/PageProductListSmartWatch';
 import PageProductListCamera from 'containers/PageProductListCamera';
 import MyProfile from 'containers/MyProfile';
 import PageProductPopular from 'containers/PageProductPopular';
+import ViewCart from 'containers/ViewCart';
 
 export default function MasterLayout() {
   return (
@@ -42,6 +43,7 @@ export default function MasterLayout() {
             />
             <Route path="/camera-list" component={PageProductListCamera} />
             <Route path="/popular-list" component={PageProductPopular} />
+            <Route path="/order-list" component={ViewCart} />
             <Route path="/my-profile" component={MyProfile} />
           </Switch>
         </div>

@@ -59,7 +59,7 @@ function ProductManagement({
       page: page - 1,
       size: pageSize,
     };
-    onGetViewHomeProduct(data, params);
+    onGetViewHomeProduct(data, '', params);
   }, [filterCategory]);
 
   return (
@@ -116,8 +116,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onGetViewHomeProduct: (data, params) =>
-      dispatch(getViewHomeProduct(data, params)),
+    onGetViewHomeProduct: (data, filter, params) =>
+      dispatch(getViewHomeProduct(data, filter, params)),
     onDeleteProductItem: (id, callBack) =>
       dispatch(deleteProductItem(id, callBack)),
   };
