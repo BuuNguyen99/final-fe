@@ -2,8 +2,16 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Popconfirm, Table, Typography } from 'antd';
 import { toast } from 'react-toastify';
+import { CookiesStorage } from 'shared/configs/cookie';
 
-function EditableTable({ dataAccount, onDeleteProductItem }) {
+function EditableTable({
+  setIsAdd,
+  setIsEdit,
+  dataAccount,
+  onEnableAccount,
+  onDisableAccount,
+  onDeleteAccount,
+}) {
   const columns = [
     {
       title: 'Full Name',
@@ -25,7 +33,18 @@ function EditableTable({ dataAccount, onDeleteProductItem }) {
     },
     {
       title: 'Gender',
-      dataIndex: 'gender',
+      render: (_, record) => (
+        <p>
+          {`${
+            // eslint-disable-next-line no-nested-ternary
+            record?.gender === true
+              ? 'male'
+              : record?.gender === false
+              ? 'female'
+              : '-'
+          }`}
+        </p>
+      ),
       width: '10%',
     },
     {
@@ -45,7 +64,13 @@ function EditableTable({ dataAccount, onDeleteProductItem }) {
           <Popconfirm
             className="mx-3"
             title="Sure to Toggle Account?"
-            onConfirm={() => handleDelete(record.id)}
+            onConfirm={() =>
+              onChangeStatusAccount(
+                record?.account?.username,
+                record?.id,
+                record?.account?.enabled,
+              )
+            }
           >
             <Typography.Link>
               {record?.account?.enabled ? 'Enable' : 'Disable'}
@@ -62,7 +87,11 @@ function EditableTable({ dataAccount, onDeleteProductItem }) {
       width: '10%',
       render: (_, record) => (
         <>
-          <Typography.Link>Edit</Typography.Link>
+          <Typography.Link
+            onClick={() => handleEditAccount(record?.account?.username)}
+          >
+            Edit
+          </Typography.Link>
           <Popconfirm
             className="mx-3"
             title="Sure to Delete?"
@@ -75,17 +104,38 @@ function EditableTable({ dataAccount, onDeleteProductItem }) {
     },
   ];
 
+  const handleEditAccount = username => {
+    CookiesStorage.setCookieData('username', username);
+    setIsAdd(false);
+    setIsEdit(true);
+  };
+  const onChangeStatusAccount = (username, id, enable) => {
+    if (enable) {
+      onDisableAccount(username, id, handleStatusAccountCallBack);
+      return;
+    }
+    onEnableAccount(username, id, handleStatusAccountCallBack);
+  };
+
+  const handleStatusAccountCallBack = error => {
+    if (error) {
+      toast.error('Toggle Status Failed');
+      return;
+    }
+    toast.success('Toggle Status Successfully');
+  };
+
   const handleDelete = id => {
     const idArray = [id];
-    onDeleteProductItem(idArray, handleCallBackDelete);
+    onDeleteAccount(idArray, handleCallBackDelete);
   };
 
   const handleCallBackDelete = error => {
     if (error) {
-      toast.error('Delete product item failed');
+      toast.error('Delete Account item failed');
       return;
     }
-    toast.success('Delete product item  Successfully');
+    toast.success('Delete Account item Successfully');
   };
 
   return (

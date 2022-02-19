@@ -10,16 +10,40 @@ import saga from 'containers/HomePage/saga';
 import reducer from 'containers/HomePage/reducer';
 import EditableTable from './TableList';
 import FormAccount from './FormAccount';
-import { getListAccount } from '../../HomePage/actions';
-import { makeSelectDataAccount } from '../../HomePage/selectors';
+import {
+  addAccount,
+  deleteAccount,
+  disableAccount,
+  editAccount,
+  enableAccount,
+  getDetailAccount,
+  getListAccount,
+} from '../../HomePage/actions';
+import {
+  makeSelectAddDataAccount,
+  makeSelectDataAccount,
+  makeSelectDetailAccount,
+} from '../../HomePage/selectors';
 
 const key = 'home';
 
-function AccountManagement({ dataAccount, onGetListAccount }) {
+function AccountManagement({
+  dataAccount,
+  onGetListAccount,
+  onDisableAccount,
+  onEnableAccount,
+  onDeleteAccount,
+  dataAddAccount,
+  onAddAccount,
+  dataDetailAccount,
+  onGetDetailAccount,
+  onEditAccount,
+}) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   const [isAdd, setIsAdd] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     const data = {
@@ -28,10 +52,20 @@ function AccountManagement({ dataAccount, onGetListAccount }) {
         ascendingOrder: [],
         descendingOrder: [],
       },
-      joinColumnProps: [],
+      joinColumnProps: [
+        {
+          joinColumnName: 'role',
+          searchFilter: {
+            property: 'name',
+            operator: 'IN',
+            value: 'ADMIN',
+          },
+        },
+      ],
     };
 
     const params = {
+      roleId: 1,
       page: 0,
       size: 999999999,
     };
@@ -55,11 +89,28 @@ function AccountManagement({ dataAccount, onGetListAccount }) {
             </Button>
           </div>
           <div className="product-management__table">
-            <EditableTable dataAccount={dataAccount.data?.content} />
+            <EditableTable
+              dataAccount={dataAccount.data?.content}
+              onDisableAccount={onDisableAccount}
+              onEnableAccount={onEnableAccount}
+              onDeleteAccount={onDeleteAccount}
+              setIsAdd={setIsAdd}
+              setIsEdit={setIsEdit}
+            />
           </div>
         </>
       ) : (
-        <FormAccount setIsAdd={setIsAdd} onGetListAccount={onGetListAccount} />
+        <FormAccount
+          setIsAdd={setIsAdd}
+          onGetListAccount={onGetListAccount}
+          dataAddAccount={dataAddAccount}
+          onAddAccount={onAddAccount}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+          dataDetailAccount={dataDetailAccount}
+          onGetDetailAccount={onGetDetailAccount}
+          onEditAccount={onEditAccount}
+        />
       )}
     </div>
   );
@@ -67,11 +118,21 @@ function AccountManagement({ dataAccount, onGetListAccount }) {
 
 const mapStateToProps = createStructuredSelector({
   dataAccount: makeSelectDataAccount(),
+  dataAddAccount: makeSelectAddDataAccount(),
+  dataDetailAccount: makeSelectDetailAccount(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onGetListAccount: (data, params) => dispatch(getListAccount(data, params)),
+    onDisableAccount: (params, id, callBack) =>
+      dispatch(disableAccount(params, id, callBack)),
+    onEnableAccount: (params, id, callBack) =>
+      dispatch(enableAccount(params, id, callBack)),
+    onDeleteAccount: (id, callBack) => dispatch(deleteAccount(id, callBack)),
+    onAddAccount: (id, callBack) => dispatch(addAccount(id, callBack)),
+    onGetDetailAccount: params => dispatch(getDetailAccount(params)),
+    onEditAccount: (data, callBack) => dispatch(editAccount(data, callBack)),
   };
 }
 

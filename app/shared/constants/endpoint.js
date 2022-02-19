@@ -15,6 +15,12 @@ export const ENDPOINT = {
     GET_LIST_POPULAR_API: '/api/product/favorite',
     DELETE_PRODUCT_API: '/api/product/multiDelete',
     GET_LIST_ACCOUNT_API: '/api/profile/getAll',
+    ENABLE_ACCOUNT_API: '/api/auth/enable',
+    DISABLE_ACCOUNT_API: '/api/auth/disable',
+    DELETE_ACCOUNT_API: '/api/auth/multiDelete',
+    ADD_ACCOUNT_API: '/api/auth/add',
+    UPDATE_ACCOUNT_API: '/api/auth/update',
+    GET_DETAIL_ACCOUNT_API: '/api/profile/getDetail',
   },
   ROUTING: {
     AUTH: '/auth',

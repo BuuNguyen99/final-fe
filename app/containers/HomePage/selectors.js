@@ -48,6 +48,18 @@ const makeSelectDataAccount = () =>
     homeState => homeState.dataAccount,
   );
 
+const makeSelectAddDataAccount = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.dataAddAccount,
+  );
+
+const makeSelectDetailAccount = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.dataDetailAccount,
+  );
+
 export {
   selectHomePage,
   makeSelectDataLaptopHome,
@@ -58,4 +70,6 @@ export {
   makeSelectPopularProduct,
   makeSelectDeleteProduct,
   makeSelectDataAccount,
+  makeSelectAddDataAccount,
+  makeSelectDetailAccount,
 };

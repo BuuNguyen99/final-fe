@@ -1,216 +1,403 @@
-import React, { useState } from 'react';
+/* eslint-disable no-nested-ternary */
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import moment from 'moment';
 import * as Yup from 'yup';
+import { DatePicker, Select } from 'antd';
 import 'antd/dist/antd.css';
-import { Select } from 'antd';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
+import { CookiesStorage } from 'shared/configs/cookie';
 
 const { Option } = Select;
 
 function FormAccount({
   setIsAdd,
-  dataAddProduct,
-  onAddProductItem,
-  onGetViewHomeProduct,
+  dataAddAccount,
+  onAddAccount,
+  onGetListAccount,
+  isEdit,
+  setIsEdit,
+  dataDetailAccount,
+  onGetDetailAccount,
+  onEditAccount,
 }) {
-  const [filterProduct, setFilterProduct] = useState('');
-  const [errorCategory, setErrorCategory] = useState(false);
-
-  const handleChangeCategory = valueCategory => {
-    setFilterProduct(valueCategory);
-  };
+  const [gender, setGender] = useState(null);
+  const [birth, setBirth] = useState(null);
+  const [enable, setEnable] = useState(true);
 
   const validationSchema = Yup.object().shape({
-    productName: Yup.string().required('Product Name is required!'),
-    price: Yup.string().required('Price is required!'),
-    discount: Yup.string().required('Discount is required!'),
-    quantity: Yup.string().required('Quantity is required!'),
-    shortDesc: Yup.string().required('Short description is required!'),
+    username: Yup.string().required('Username is required!'),
+    email: Yup.string()
+      .required('Email is required!')
+      .email('Email is invalid!'),
+    firstname: Yup.string().required('First Name is required!'),
+    lastname: Yup.string().required('Last Name is required!'),
+    address: Yup.string().required('Address is required!'),
+    phoneNumber: Yup.string()
+      .required('Phone number is required!')
+      .min(10, 'Please enter a valid phone number!')
+      .max(11, 'Please enter a valid phone number!')
+      .matches(
+        /^(0[1-9])+([0-9]{8,9})\s*$/,
+        'Please enter a valid phone number!',
+      ),
+    password: !isEdit
+      ? Yup.string()
+          .required('Password is required!')
+          .min(6, 'Password must be at least 6 characters!')
+          .max(40, 'Password must not exceed 40 characters!')
+      : null,
+    confirmedPassword: !isEdit
+      ? Yup.string()
+          .required('Confirm Password is required!')
+          .oneOf(
+            [Yup.ref('password'), null],
+            'Confirm Password does not match!',
+          )
+      : null,
   });
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
+  useEffect(() => {
+    const username = CookiesStorage.getCookieData('username') || null;
+    if (username && isEdit) {
+      onGetDetailAccount(username);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isEdit) {
+      setGender(dataDetailAccount?.data?.gender);
+      setBirth(dataDetailAccount?.data?.birthday);
+      setEnable(dataDetailAccount?.data?.account?.enabled);
+      setValue('username', dataDetailAccount?.data?.account?.username || '');
+      setValue('email', dataDetailAccount?.data?.account?.email || '');
+      setValue('firstname', dataDetailAccount?.data?.firstname || '');
+      setValue('lastname', dataDetailAccount?.data?.lastname || '');
+      setValue('address', dataDetailAccount?.data?.address || '');
+      setValue('phoneNumber', dataDetailAccount?.data?.mobile || '');
+    }
+  }, [dataDetailAccount]);
+
   const onSubmit = data => {
-    if (filterProduct.length === 0) {
-      setErrorCategory(true);
+    const dataAdd = {
+      username: data.username,
+      email: data.email,
+      enabled: enable,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      address: data.address,
+      mobile: data.phoneNumber,
+      birthday: birth,
+      gender,
+      password: data.password,
+      confirmedPassword: data.confirmedPassword,
+    };
+    if (isEdit) {
+      const dataEdit = {
+        username: data.username,
+        email: data.email,
+        enabled: enable,
+        firstname: data.firstname,
+        lastname: data.lastname,
+        address: data.address,
+        mobile: data.phoneNumber,
+        birthday: birth,
+        gender,
+      };
+      onEditAccount(dataEdit, handleCallBackEditAccount);
       return;
     }
-    setErrorCategory(false);
-    const dataAdd = {
-      title: data.productName,
-      discount: data.discount,
-      price: data.price,
-      quantity: data.quantity,
-      category: filterProduct,
-      metaTitle: data.shortDesc,
-    };
-    onAddProductItem(dataAdd, handleCallBackAddProduct);
+    onAddAccount(dataAdd, handleCallBackAddAccount);
   };
 
-  const handleCallBackAddProduct = error => {
+  const handleCallBackAddAccount = error => {
     if (error) {
-      toast.error('Add Product failed');
+      toast.error('Add Account failed');
       return;
     }
     const data = {
-      searchFilters: [
-        {
-          property: 'category',
-          operator: 'LIKE',
-          value: '',
-        },
-      ],
+      searchFilters: [],
       sortOrder: {
         ascendingOrder: [],
         descendingOrder: [],
       },
-      joinColumnProps: [],
+      joinColumnProps: [
+        {
+          joinColumnName: 'role',
+          searchFilter: {
+            property: 'name',
+            operator: 'IN',
+            value: 'ADMIN',
+          },
+        },
+      ],
     };
 
     const params = {
+      roleId: 1,
       page: 0,
-      size: 9999999999,
+      size: 999999999,
     };
-    onGetViewHomeProduct(data, params);
+
+    onGetListAccount(data, params);
     setIsAdd(true);
-    toast.success('Add Product successfully');
+    toast.success('Add Account successfully');
   };
 
-  const handleError = () => {
-    if (filterProduct.length !== 0) {
-      setErrorCategory(false);
+  const handleCallBackEditAccount = error => {
+    if (error) {
+      toast.error('Edit Account failed');
       return;
     }
-    setErrorCategory(true);
+    const data = {
+      searchFilters: [],
+      sortOrder: {
+        ascendingOrder: [],
+        descendingOrder: [],
+      },
+      joinColumnProps: [
+        {
+          joinColumnName: 'role',
+          searchFilter: {
+            property: 'name',
+            operator: 'IN',
+            value: 'ADMIN',
+          },
+        },
+      ],
+    };
+
+    const params = {
+      roleId: 1,
+      page: 0,
+      size: 999999999,
+    };
+
+    onGetListAccount(data, params);
+    setIsAdd(true);
+    setIsEdit(false);
+    CookiesStorage.setCookieData('username', null);
+    toast.success('Edit Account successfully');
   };
+
+  function onChange(value) {
+    setGender(value === 'male' || false);
+  }
+  function onChangeDate(value) {
+    setBirth(value);
+  }
+  function onChangeStatus(value) {
+    const bool = value === 'enable' && true;
+    setEnable(bool);
+  }
 
   return (
     <div className="add-product-page">
-      <h2 className="mt-3"> Add Product</h2>
+      <h2 className="mt-3">{`${isEdit ? 'Edit Account' : 'Add Account'}  `}</h2>
       <div className="register-form mt-4">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row mb-3">
-            <div className="form-group col-6">
-              <label className="mb-2 required">Product Name</label>
+            <div className="form-group col-4">
+              <label className="mb-2 required">Username</label>
               <input
-                name="productName"
+                name="username"
                 type="text"
-                {...register('productName')}
+                {...register('username')}
                 className={`form-control ${
-                  errors.productName ? 'is-invalid' : ''
+                  errors.username ? 'is-invalid' : ''
                 }`}
+                disabled={isEdit}
               />
-              <div className="invalid-feedback">
-                {errors.productName?.message}
-              </div>
+              <div className="invalid-feedback">{errors.username?.message}</div>
             </div>
-            <div className="form-group col-3">
-              <label className="mb-2 required">Price</label>
-              <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">$</span>
-                </div>
-                <input
-                  step="any"
-                  name="price"
-                  type="number"
-                  {...register('price')}
-                  className={`form-control price-input ${
-                    errors.price ? 'is-invalid' : ''
-                  }`}
-                />
-                <div className="invalid-feedback">{errors.price?.message}</div>
-              </div>
-            </div>
-
-            <div className="form-group col-3">
-              <label className="mb-2 required">Discount</label>
+            <div className="form-group col-8">
+              <label className="mb-2 required">Email</label>
               <input
-                step="any"
-                name="discount"
-                type="number"
-                {...register('discount')}
-                className={`form-control price-input ${
-                  errors.discount ? 'is-invalid' : ''
-                }`}
+                name="email"
+                type="text"
+                {...register('email')}
+                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                disabled={isEdit}
               />
-              <div className="invalid-feedback">{errors.discount?.message}</div>
+              <div className="invalid-feedback">{errors.email?.message}</div>
             </div>
           </div>
           <div className="row mb-3">
-            <div className="form-group col-2">
-              <label className="mb-2 required">Quantity</label>
+            <div className="form-group col-6">
+              <label className="required mb-2">First Name</label>
               <input
-                name="quantity"
-                type="number"
-                {...register('quantity')}
-                className={`form-control ${
-                  errors.quantity ? 'is-invalid' : ''
-                }`}
-              />
-              <div className="invalid-feedback">{errors.quantity?.message}</div>
-            </div>
-            <div className="form-group col-3">
-              <label className="mb-2 required">Category</label>
-              <Select
-                style={{ width: 270 }}
-                onChange={handleChangeCategory}
-                placeholder="Select category"
-                className={` ${errorCategory ? 'error' : ''}`}
-              >
-                <Option value="laptop">Laptop & Table</Option>
-                <Option value="camera">Camera & Flycam</Option>
-                <Option value="smartwatch">Smartwatch</Option>
-                <Option value="smartphone">Smartphone</Option>
-              </Select>
-              {errorCategory && (
-                <div className="category-error">Category is required!</div>
-              )}
-            </div>
-            <div className="form-group col-7">
-              <label className="mb-2 required">Short Description</label>
-              <input
-                name="shortDesc"
+                name="firstname"
                 type="text"
-                {...register('shortDesc')}
+                {...register('firstname')}
                 className={`form-control ${
-                  errors.shortDesc ? 'is-invalid' : ''
+                  errors.firstname ? 'is-invalid' : ''
                 }`}
               />
               <div className="invalid-feedback">
-                {errors.shortDesc?.message}
+                {errors.firstname?.message}
+              </div>
+            </div>
+            <div className="form-group col-6">
+              <label className="required mb-2">Last Name</label>
+              <input
+                name="lastname"
+                type="text"
+                {...register('lastname')}
+                className={`form-control ${
+                  errors.lastname ? 'is-invalid' : ''
+                }`}
+              />
+              <div className="invalid-feedback">{errors.lastname?.message}</div>
+            </div>
+          </div>
+          <div className="row mb-3">
+            <div className="form-group col-3">
+              <label className="mb-2">Gender</label>
+              <Select
+                defaultValue={
+                  gender === true ? 'male' : gender === false ? 'female' : null
+                }
+                style={{ width: '100%' }}
+                showSearch
+                placeholder="Select a gender"
+                optionFilterProp="children"
+                onChange={onChange}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+              >
+                <Option value="male">Male</Option>
+                <Option value="female">Female</Option>
+              </Select>
+            </div>
+            <div className="form-group col-3">
+              <label className="mb-2">Status</label>
+              <Select
+                defaultValue={
+                  enable === true
+                    ? 'enable'
+                    : gender === false
+                    ? 'disable'
+                    : null
+                }
+                style={{ width: '100%' }}
+                showSearch
+                optionFilterProp="children"
+                onChange={onChangeStatus}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+              >
+                <Option value="enable">Enable</Option>
+                <Option value="disable">Disable</Option>
+              </Select>
+            </div>
+            <div className="form-group col-6">
+              <label className="mb-2">Date of birth</label>
+              <DatePicker
+                onChange={onChangeDate}
+                className="form-control"
+                style={{ width: '100%' }}
+                format="DD/MM/YYYY"
+                defaultValue={birth ? moment(birth, 'DD/MM/YYYY') : ''}
+              />
+            </div>
+          </div>
+          <div className="row mb-3">
+            <div className="form-group col-8">
+              <label className="required mb-2">Address</label>
+              <input
+                name="address"
+                type="text"
+                {...register('address')}
+                className={`form-control ${errors.address ? 'is-invalid' : ''}`}
+              />
+              <div className="invalid-feedback">{errors.address?.message}</div>
+            </div>
+            <div className="form-group col-4">
+              <label className="required mb-2">Phone</label>
+              <input
+                name="phoneNumber"
+                type="text"
+                {...register('phoneNumber')}
+                className={`form-control ${
+                  errors.phoneNumber ? 'is-invalid' : ''
+                }`}
+              />
+              <div className="invalid-feedback">
+                {errors.phoneNumber?.message}
               </div>
             </div>
           </div>
-
-          <div className="row my-5">
-            <label className="mb-2">Product Images</label>
-          </div>
+          {!isEdit && (
+            <div className="row">
+              <div className="col-6">
+                <label className="required mb-2">Password</label>
+                <input
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  {...register('password')}
+                  className={`form-control form-control-lg form-control-solid ${
+                    errors.password ? 'is-invalid' : ''
+                  }`}
+                  autoComplete="off"
+                />
+                <div className="invalid-feedback">
+                  {errors.password?.message}
+                </div>
+              </div>
+              <div className="col-6">
+                <label className="required mb-2">Confirm Password</label>
+                <input
+                  placeholder="Confirm Password"
+                  name="confirmedPassword"
+                  type="password"
+                  {...register('confirmedPassword')}
+                  className={`form-control form-control-lg form-control-solid ${
+                    errors.confirmedPassword ? 'is-invalid' : ''
+                  }`}
+                  autoComplete="off"
+                />
+                <div className="invalid-feedback">
+                  {errors.confirmedPassword?.message}
+                </div>
+              </div>
+            </div>
+          )}
           <div className="form-group my-5">
             <button
               type="submit"
-              className={`btn btn-primary ${dataAddProduct?.isFetching &&
+              className={`btn btn-primary ${dataAddAccount?.isFetching &&
                 'disabled'}`}
-              onClick={handleError}
             >
-              {dataAddProduct?.isFetching && (
+              {dataAddAccount?.isFetching && (
                 <Spinner color="light" size="sm">
                   Loading...
                 </Spinner>
               )}{' '}
-              Add
+              {!isEdit ? 'Add' : 'Edit'}
             </button>
             <button
               type="button"
-              onClick={() => setIsAdd(true)}
+              onClick={() => {
+                setIsAdd(true);
+                setIsEdit(false);
+                CookiesStorage.setCookieData('username', null);
+              }}
               className="btn btn-light float-right mx-3"
             >
               Cancel
