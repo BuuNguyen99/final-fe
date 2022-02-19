@@ -36,6 +36,12 @@ const makeSelectDeleteProduct = () =>
     homeState => homeState.deleteProduct,
   );
 
+const makeSelectPopularProduct = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.dataPopular,
+  );
+
 export {
   selectHomePage,
   makeSelectDataLaptopHome,
@@ -43,5 +49,6 @@ export {
   makeSelectDataSmartwatchHome,
   makeSelectDataSmartphoneHome,
   makeSelectDataProduct,
+  makeSelectPopularProduct,
   makeSelectDeleteProduct,
 };

@@ -6,6 +6,7 @@ const { Option } = Select;
 
 function PageProductPopular() {
   function handleChange(value) {
+    // eslint-disable-next-line no-console
     console.log(`selected ${value}`);
   }
 

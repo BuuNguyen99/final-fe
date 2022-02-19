@@ -53,6 +53,30 @@ const formats = [
   'video',
 ];
 
+const fileList = [
+  {
+    uid: '-1',
+    name: 'image.png',
+    status: 'done',
+    url:
+      'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  },
+  {
+    uid: '-2',
+    name: 'image.png',
+    status: 'done',
+    url:
+      'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  },
+  {
+    uid: '-3',
+    name: 'image.png',
+    status: 'done',
+    url:
+      'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  },
+];
+
 function AddProduct({
   setIsAddProduct,
   dataAddProduct,
@@ -287,6 +311,7 @@ function AddProduct({
             <label className="mb-2">Product Images</label>
             <Space direction="vertical" style={{ width: '100%' }} size="large">
               <Upload
+                fileList={fileList}
                 customRequest={custom}
                 onChange={hanldeChangeUpload}
                 listType="picture"

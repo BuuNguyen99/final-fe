@@ -2,6 +2,7 @@ import produce from 'immer';
 import { REQUEST, SUCCESS, FAILURE } from 'utils/actionType';
 import {
   GET_LIST_VIEW_ACTION,
+  GET_LIST_POPULAR_PRODUCT,
   DELETE_PRODUCT_ACTION,
 } from 'containers/HomePage/constants';
 
@@ -27,6 +28,10 @@ export const initialState = {
     isFetching: false,
   },
   deleteProduct: {
+    isFetching: false,
+  },
+  dataPopular: {
+    data: [],
     isFetching: false,
   },
 };
@@ -103,6 +108,17 @@ const authReducer = (state = initialState, action) =>
         break;
       case FAILURE(DELETE_PRODUCT_ACTION):
         draft.deleteProduct.isFetching = false;
+        break;
+      case REQUEST(GET_LIST_POPULAR_PRODUCT):
+        draft.dataPopular.isFetching = true;
+        break;
+      case SUCCESS(GET_LIST_POPULAR_PRODUCT):
+        draft.dataPopular.data = action.data;
+        draft.dataPopular.isFetching = false;
+        break;
+      case FAILURE(GET_LIST_POPULAR_PRODUCT):
+        draft.dataPopular.data = [];
+        draft.dataPopular.isFetching = false;
         break;
       default:
         break;
