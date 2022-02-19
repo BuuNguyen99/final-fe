@@ -53,7 +53,12 @@ const formats = [
   'video',
 ];
 
-function AddProduct({ setIsAddProduct, dataAddProduct, onAddProductItem }) {
+function AddProduct({
+  setIsAddProduct,
+  dataAddProduct,
+  onAddProductItem,
+  onGetViewHomeProduct,
+}) {
   const [value, setValue] = useState('');
   const [filterProduct, setFilterProduct] = useState('');
   const [fileImage, setFileImage] = useState([]);
@@ -130,8 +135,28 @@ function AddProduct({ setIsAddProduct, dataAddProduct, onAddProductItem }) {
       toast.error('Add Product failed');
       return;
     }
-    toast.success('Add Product successfully');
+    const data = {
+      searchFilters: [
+        {
+          property: 'category',
+          operator: 'LIKE',
+          value: '',
+        },
+      ],
+      sortOrder: {
+        ascendingOrder: [],
+        descendingOrder: [],
+      },
+      joinColumnProps: [],
+    };
+
+    const params = {
+      page: 0,
+      size: 10,
+    };
+    onGetViewHomeProduct(data, params);
     setIsAddProduct(true);
+    toast.success('Add Product successfully');
   };
 
   const handleError = () => {
