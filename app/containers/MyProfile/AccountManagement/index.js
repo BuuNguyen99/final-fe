@@ -110,6 +110,7 @@ function AccountManagement({
           dataDetailAccount={dataDetailAccount}
           onGetDetailAccount={onGetDetailAccount}
           onEditAccount={onEditAccount}
+          isAdd={isAdd}
         />
       )}
     </div>

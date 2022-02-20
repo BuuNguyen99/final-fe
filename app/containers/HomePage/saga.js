@@ -13,6 +13,8 @@ import {
   ADD_ACCOUNT,
   GET_DETAIL_ACCOUNT,
   EDIT_ACCOUNT,
+  GET_DETAIL_PRODUCT_ACTION,
+  UPDATE_PRODUCT_ACTION,
 } from 'containers/HomePage/constants';
 
 const { API } = ENDPOINT;
@@ -192,6 +194,43 @@ export function* updateAccountSaga({ data, callBack }) {
   }
 }
 
+function getDetailProductApi(params) {
+  return Api.get(API.GET_DETAIL_PRODUCT_API, {
+    params: {
+      slug: params,
+    },
+  });
+}
+
+export function* getDetailProductSaga({ params }) {
+  try {
+    const response = yield call(getDetailProductApi, params);
+    const { data } = response;
+    yield put({ type: SUCCESS(GET_DETAIL_PRODUCT_ACTION), data });
+  } catch (error) {
+    yield put({ type: FAILURE(GET_DETAIL_PRODUCT_ACTION), error });
+  }
+}
+
+function updateProductAPI(data, id) {
+  return Api.patch(API.UPDATE_PRODUCT_API, data, {
+    params: {
+      id,
+    },
+  });
+}
+
+export function* updateProductSaga({ id, data, callBack }) {
+  try {
+    yield call(updateProductAPI, data, id);
+    yield put({ type: SUCCESS(UPDATE_PRODUCT_ACTION) });
+    callBack?.();
+  } catch (error) {
+    callBack?.(error);
+    yield put({ type: FAILURE(UPDATE_PRODUCT_ACTION), error });
+  }
+}
+
 export default function* authData() {
   yield takeEvery(REQUEST(GET_LIST_VIEW_ACTION), getViewHomeProduct);
   yield takeLatest(REQUEST(DELETE_PRODUCT_ACTION), deleteProductItemSaga);
@@ -203,4 +242,6 @@ export default function* authData() {
   yield takeLatest(REQUEST(ADD_ACCOUNT), addAccountSaga);
   yield takeLatest(REQUEST(GET_DETAIL_ACCOUNT), getDetailAccountSaga);
   yield takeLatest(REQUEST(EDIT_ACCOUNT), updateAccountSaga);
+  yield takeLatest(REQUEST(GET_DETAIL_PRODUCT_ACTION), getDetailProductSaga);
+  yield takeLatest(REQUEST(UPDATE_PRODUCT_ACTION), updateProductSaga);
 }

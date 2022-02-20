@@ -10,6 +10,7 @@ import {
   DELETE_ACCOUNT,
   ADD_ACCOUNT,
   GET_DETAIL_ACCOUNT,
+  GET_DETAIL_PRODUCT_ACTION,
 } from 'containers/HomePage/constants';
 
 export const initialState = {
@@ -48,6 +49,10 @@ export const initialState = {
     isFetching: false,
   },
   dataDetailAccount: {
+    data: [],
+    isFetching: false,
+  },
+  dataDetailProduct: {
     data: [],
     isFetching: false,
   },
@@ -200,6 +205,18 @@ const authReducer = (state = initialState, action) =>
       case FAILURE(GET_DETAIL_ACCOUNT):
         draft.dataDetailAccount.data = [];
         draft.dataDetailAccount.isFetching = false;
+        break;
+      case REQUEST(GET_DETAIL_PRODUCT_ACTION):
+        draft.dataDetailProduct.data = [];
+        draft.dataDetailProduct.isFetching = true;
+        break;
+      case SUCCESS(GET_DETAIL_PRODUCT_ACTION):
+        draft.dataDetailProduct.data = action.data;
+        draft.dataDetailProduct.isFetching = false;
+        break;
+      case FAILURE(GET_DETAIL_PRODUCT_ACTION):
+        draft.dataDetailProduct.data = [];
+        draft.dataDetailProduct.isFetching = false;
         break;
       default:
         break;

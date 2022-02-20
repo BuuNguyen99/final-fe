@@ -15,6 +15,8 @@ import {
 } from 'containers/HomePage/actions';
 import EditableTable from './TableList';
 import AddProduct from './AddProduct';
+import { makeSelectDetailProduct } from '../../HomePage/selectors';
+import { editProduct, getDetailProduct } from '../../HomePage/actions';
 const { Option } = Select;
 
 const key = 'home';
@@ -25,15 +27,16 @@ function ProductManagement({
   dataProduct,
   onGetViewHomeProduct,
   onDeleteProductItem,
+  onGetDetailProduct,
+  dataDetailProduct,
+  onEditProduct,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   const [filterCategory, setFilterCategory] = useState('');
   const [isAddProduct, setIsAddProduct] = useState(true);
-
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [isEdit, setIsEdit] = useState(false);
 
   const handleFilter = filter => {
     setFilterCategory(filter);
@@ -56,8 +59,8 @@ function ProductManagement({
     };
 
     const params = {
-      page: page - 1,
-      size: pageSize,
+      page: 0,
+      size: 9999,
     };
     onGetViewHomeProduct(data, '', params);
   }, [filterCategory]);
@@ -90,9 +93,8 @@ function ProductManagement({
           </div>
           <div className="product-management__table">
             <EditableTable
-              setPage={setPage}
-              setPageSize={setPageSize}
-              pageSizeLimit={pageSize}
+              setIsAdd={setIsAddProduct}
+              setIsEdit={setIsEdit}
               dataProduct={dataProduct?.data?.content}
               onDeleteProductItem={onDeleteProductItem}
             />
@@ -104,6 +106,13 @@ function ProductManagement({
           dataAddProduct={dataAddProduct}
           onAddProductItem={onAddProductItem}
           onGetViewHomeProduct={onGetViewHomeProduct}
+          setIsAdd={setIsAddProduct}
+          isEdit={isEdit}
+          isAdd={isAddProduct}
+          setIsEdit={setIsEdit}
+          onGetDetailProduct={onGetDetailProduct}
+          onEditProduct={onEditProduct}
+          dataDetailProduct={dataDetailProduct}
         />
       )}
     </div>
@@ -112,6 +121,7 @@ function ProductManagement({
 
 const mapStateToProps = createStructuredSelector({
   dataProduct: makeSelectDataProduct(),
+  dataDetailProduct: makeSelectDetailProduct(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -120,6 +130,9 @@ function mapDispatchToProps(dispatch) {
       dispatch(getViewHomeProduct(data, filter, params)),
     onDeleteProductItem: (id, callBack) =>
       dispatch(deleteProductItem(id, callBack)),
+    onGetDetailProduct: params => dispatch(getDetailProduct(params)),
+    onEditProduct: (id, data, callBack) =>
+      dispatch(editProduct(id, data, callBack)),
   };
 }
 

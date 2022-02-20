@@ -21,6 +21,8 @@ export const ENDPOINT = {
     ADD_ACCOUNT_API: '/api/auth/add',
     UPDATE_ACCOUNT_API: '/api/auth/update',
     GET_DETAIL_ACCOUNT_API: '/api/profile/getDetail',
+    GET_DETAIL_PRODUCT_API: '/api/product/getDetail',
+    UPDATE_PRODUCT_API: '/api/product/update',
   },
   ROUTING: {
     AUTH: '/auth',

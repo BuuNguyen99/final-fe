@@ -10,6 +10,8 @@ import {
   ADD_ACCOUNT,
   GET_DETAIL_ACCOUNT,
   EDIT_ACCOUNT,
+  UPDATE_PRODUCT_ACTION,
+  GET_DETAIL_PRODUCT_ACTION,
 } from 'containers/HomePage/constants';
 
 export function getViewHomeProduct(dataProduct, filter, params) {
@@ -26,6 +28,22 @@ export function deleteProductItem(id, callBack) {
     type: REQUEST(DELETE_PRODUCT_ACTION),
     id,
     callBack,
+  };
+}
+
+export function editProduct(id, data, callBack) {
+  return {
+    type: REQUEST(UPDATE_PRODUCT_ACTION),
+    id,
+    data,
+    callBack,
+  };
+}
+
+export function getDetailProduct(params) {
+  return {
+    type: REQUEST(GET_DETAIL_PRODUCT_ACTION),
+    params,
   };
 }
 

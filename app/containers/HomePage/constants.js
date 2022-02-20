@@ -1,6 +1,10 @@
 export const GET_LIST_PRODUCT = 'productTechnology/HomePage/GET_LIST_PRODUCT';
 export const DELETE_PRODUCT_ACTION =
   'productTechnology/HomePage/DELETE_PRODUCT_ACTION';
+export const UPDATE_PRODUCT_ACTION =
+  'productTechnology/HomePage/UPDATE_PRODUCT_ACTION';
+export const GET_DETAIL_PRODUCT_ACTION =
+  'productTechnology/HomePage/GET_DETAIL_PRODUCT_ACTION';
 export const GET_LIST_POPULAR_PRODUCT =
   'productTechnology/HomePage/GET_LIST_POPULAR_PRODUCT';
 export const GET_LIST_ACCOUNT = 'productTechnology/HomePage/GET_LIST_ACCOUNT';
