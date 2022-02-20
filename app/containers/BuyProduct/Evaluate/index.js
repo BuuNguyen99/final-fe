@@ -88,7 +88,7 @@ function Evaluate() {
             <h3 className="title"> Add Review </h3>
             <div className="form-group col-12 my-5">
               <label>Your review</label>
-              <Rate allowHalf defaultValue={5} className="rating my-2" />
+              <Rate defaultValue={5} className="rating my-2" />
             </div>
             <div className="form-group col-12 mt-5">
               <label className="required mb-2">Your Comment</label>

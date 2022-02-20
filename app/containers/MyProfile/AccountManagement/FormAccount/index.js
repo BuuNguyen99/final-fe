@@ -208,7 +208,7 @@ function FormAccount({
 
   return (
     <div className="add-product-page">
-      {isAdd || isLoading ? (
+      {!isAdd || isLoading ? (
         <>
           <h2 className="mt-3">{`${
             isEdit ? 'Edit Account' : 'Add Account'

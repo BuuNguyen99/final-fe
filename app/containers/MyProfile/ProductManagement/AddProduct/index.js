@@ -25,8 +25,14 @@ const modules = {
       { indent: '-1' },
       { indent: '+1' },
     ],
-    ['link', 'image', 'video'],
+    [('link', 'image', 'video')],
     ['clean'],
+    [
+      { align: '' },
+      { align: 'center' },
+      { align: 'right' },
+      { align: 'justify' },
+    ],
   ],
   clipboard: {
     // toggle to add extra line breaks when pasting HTML:
@@ -52,6 +58,7 @@ const formats = [
   'link',
   'image',
   'video',
+  'align',
 ];
 
 function AddProduct({
@@ -290,7 +297,7 @@ function AddProduct({
   return (
     <div className="add-product-page">
       <h2 className="mt-3"> {isEdit ? 'Edit Product' : 'Add Product'}</h2>
-      {isAdd || isLoading ? (
+      {!isAdd || isLoading ? (
         <div className="register-form mt-4">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row mb-3">
