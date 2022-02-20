@@ -31,7 +31,7 @@ export default function MasterLayout() {
             <Route path="/" component={HomePage} exact />
             <Route path="/blog" component={Blog} />
             <Route path="/contact-us" component={ContactUs} />
-            <Route path="/products/:id" component={BuyProduct} />
+            <Route path="/products/:slug" component={BuyProduct} />
             <Route path="/laptop-list" component={PageProductListLapTop} />
             <Route
               path="/smart-phone-list"

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 
 function SliderProducts({ data }) {
@@ -16,15 +17,17 @@ function SliderProducts({ data }) {
       <Slider {...settings}>
         {data.map((el, index) => (
           <div className="section-show col-3" key={`laptop-item-${index}`}>
-            <div className="p-item">
-              <div className="image">
-                <img src={el.images[0]?.url} alt="" />
+            <Link to={`/products/${el.slug}`}>
+              <div className="p-item">
+                <div className="image">
+                  <img src={el.images[0]?.url} alt="" />
+                </div>
+                <div className="show-item">
+                  <h4 className="title">{el.title}</h4>
+                  <span className="money-sale">{el.price} VND</span>
+                </div>
               </div>
-              <div className="show-item">
-                <h4 className="title">{el.title}</h4>
-                <span className="money-sale">{el.price} VND</span>
-              </div>
-            </div>
+            </Link>
           </div>
         ))}
       </Slider>
