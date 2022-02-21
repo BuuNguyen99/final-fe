@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import 'antd/dist/antd.css';
 import { Radio, Space, Button } from 'antd';
+import { formatPriceVND } from '../../../utils/common';
 
-function Payment() {
+function Payment({ dataCart }) {
   const [valueRadio, setValueRadio] = useState(1);
   const validationSchema = Yup.object().shape({
     fullname: Yup.string().required('Full Name is required'),
@@ -23,6 +24,16 @@ function Payment() {
     address: Yup.string().required('Address is required!'),
   });
 
+  const [state, setState] = useState(0);
+
+  useEffect(() => {
+    let total = 0;
+    if (dataCart?.data?.length !== 0) {
+      // eslint-disable-next-line no-return-assign
+      dataCart?.data.map(el => (total += el.unitPrice * el.quantity));
+    }
+    setState(total);
+  }, [dataCart]);
   const {
     register,
     handleSubmit,
@@ -122,9 +133,6 @@ function Payment() {
                   Cash payment on receipt (cash/swipe ATM card, Visa, Master)
                 </Radio>
                 <Radio value={2}>Payment via bank transfer (recommended)</Radio>
-                <Radio value={3}>
-                  Online payment via Momo (Through ATM, VISA, MASTER cards)
-                </Radio>
               </Space>
             </Radio.Group>
           </div>
@@ -134,7 +142,7 @@ function Payment() {
             <h3>total money</h3>
             <div className="total">
               <p>Total</p>
-              <p>177.200.000 VND</p>
+              <p> {formatPriceVND(state.toString())} VND</p>
             </div>
             <div className="total">
               <p>Promotion when using Voucher</p>
@@ -142,7 +150,9 @@ function Payment() {
             </div>
             <div className="payment-money">
               <p className="payment-money-text">Into money</p>
-              <p className="money-text">2.000.000.000 VND</p>
+              <p className="money-text">
+                {formatPriceVND(state.toString())} VND
+              </p>
             </div>
             <div className="button-order">
               <Button type="primary" htmlType="submit" danger block>

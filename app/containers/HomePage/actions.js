@@ -11,7 +11,10 @@ import {
   GET_DETAIL_ACCOUNT,
   EDIT_ACCOUNT,
   UPDATE_PRODUCT_ACTION,
+  GET_LIST_COMMENT,
   GET_DETAIL_PRODUCT_ACTION,
+  ADD_COMMENT_PRODUCT,
+  ADD_TO_CART,
 } from 'containers/HomePage/constants';
 
 export function getViewHomeProduct(dataProduct, filter, params) {
@@ -107,5 +110,28 @@ export function getDetailAccount(params) {
   return {
     type: REQUEST(GET_DETAIL_ACCOUNT),
     params,
+  };
+}
+
+export function getCommentProduct(slug) {
+  return {
+    type: REQUEST(GET_LIST_COMMENT),
+    slug,
+  };
+}
+
+export function addCommentProduct(dataComment, callBack) {
+  return {
+    type: REQUEST(ADD_COMMENT_PRODUCT),
+    dataComment,
+    callBack,
+  };
+}
+
+export function addToCart(dataProduct, callBack) {
+  return {
+    type: REQUEST(ADD_TO_CART),
+    dataProduct,
+    callBack,
   };
 }

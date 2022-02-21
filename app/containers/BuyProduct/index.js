@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import Zoom from 'react-img-zoom';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { Rate, Button, Tabs } from 'antd';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -9,20 +9,39 @@ import InputSpinner from 'react-bootstrap-input-spinner';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
+import { toast } from 'react-toastify';
 import saga from 'containers/HomePage/saga';
 import reducer from 'containers/HomePage/reducer';
 import Description from './description';
 import Evaluate from './Evaluate';
-import { makeSelectDetailProduct } from '../HomePage/selectors';
-import { getDetailProduct } from '../HomePage/actions';
+import {
+  makeSelectDetailProduct,
+  makeSelectDataComment,
+} from '../HomePage/selectors';
+import {
+  getDetailProduct,
+  getCommentProduct,
+  addCommentProduct,
+  addToCart,
+} from '../HomePage/actions';
 import { formatPriceVND } from '../../utils/common';
+import { getCartProduct } from '../Auth/actions';
 
 const key = 'home';
 
-function BuyProduct({ dataDetailProduct, onGetDetailProduct }) {
+function BuyProduct({
+  dataDetailProduct,
+  onGetDetailProduct,
+  onGetCommentProduct,
+  dataComment,
+  onAddCommentProduct,
+  onAddToCart,
+  onGetCartProduct,
+}) {
+  const history = useHistory();
   const { TabPane } = Tabs;
   const [isSuccess, setIsSuccess] = useState(false);
-  const [number, setNumber] = useState(0);
+  const [number, setNumber] = useState(1);
 
   const { slug } = useParams();
   useInjectReducer({ key, reducer });
@@ -30,8 +49,9 @@ function BuyProduct({ dataDetailProduct, onGetDetailProduct }) {
 
   useEffect(() => {
     onGetDetailProduct(slug);
+    onGetCommentProduct(slug);
     setIsSuccess(true);
-  }, []);
+  }, [slug]);
 
   const settings = {
     dots: true,
@@ -64,6 +84,37 @@ function BuyProduct({ dataDetailProduct, onGetDetailProduct }) {
       // code block
     }
   };
+
+  const handleAddToCart = (count, id) => {
+    const data = {
+      productId: id,
+      quantity: count,
+    };
+    onAddToCart(data, handleCallBackAddCart);
+  };
+
+  const handleCallBackAddCart = error => {
+    if (error) {
+      toast.error('Add To Cart Item Failed');
+      return;
+    }
+    toast.success('Add To Cart Item Successfully');
+    onGetCartProduct();
+  };
+
+  const handleBuyNow = () => {
+    const data = {
+      productId: dataDetailProduct?.data?.id,
+      quantity: number,
+    };
+    onAddToCart(data, handleGetCart);
+    history.push('/order-list');
+  };
+
+  const handleGetCart = () => {
+    onGetCartProduct();
+  };
+
   return (
     <div className="container">
       {!dataDetailProduct?.isFetching && isSuccess ? (
@@ -90,7 +141,6 @@ function BuyProduct({ dataDetailProduct, onGetDetailProduct }) {
                   Home
                 </Link>
                 <span className="link-flycam">
-                  {' '}
                   / {handleCategory(dataDetailProduct?.data?.category)}
                 </span>
               </div>
@@ -100,7 +150,6 @@ function BuyProduct({ dataDetailProduct, onGetDetailProduct }) {
               <div className="is-divider small" />
               <div className="rate">
                 <Rate
-                  allowHalf
                   defaultValue={dataDetailProduct?.data?.averageRating}
                   disabled
                   className="rating"
@@ -129,10 +178,22 @@ function BuyProduct({ dataDetailProduct, onGetDetailProduct }) {
                     size="sm"
                   />
                 </div>
-                <Button danger size="large" className="add-cart">
+                <Button
+                  danger
+                  size="large"
+                  className="add-cart"
+                  onClick={() =>
+                    handleAddToCart(number, dataDetailProduct?.data?.id)
+                  }
+                >
                   Add To Cart
                 </Button>
-                <Button type="primary" danger size="large">
+                <Button
+                  type="primary"
+                  danger
+                  size="large"
+                  onClick={handleBuyNow}
+                >
                   Buy Now
                 </Button>
               </div>
@@ -144,25 +205,42 @@ function BuyProduct({ dataDetailProduct, onGetDetailProduct }) {
                 <TabPane tab="Description" key="1">
                   <Description content={dataDetailProduct?.data?.content} />
                 </TabPane>
-                <TabPane tab="Evaluate (4)" key="2">
-                  <Evaluate />
+                <TabPane
+                  tab={`Evaluate (${dataComment?.data?.length})`}
+                  key="2"
+                >
+                  <Evaluate
+                    id={dataDetailProduct?.data?.id}
+                    dataComment={dataComment}
+                    onAddCommentProduct={onAddCommentProduct}
+                    onGetCommentProduct={onGetCommentProduct}
+                    title={dataDetailProduct?.data?.title}
+                  />
                 </TabPane>
               </Tabs>
             </div>
           </div>
         </>
-      ) : null}
+      ) : (
+        <div className="height-page" />
+      )}
     </div>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
   dataDetailProduct: makeSelectDetailProduct(),
+  dataComment: makeSelectDataComment(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onGetDetailProduct: params => dispatch(getDetailProduct(params)),
+    onGetCommentProduct: slug => dispatch(getCommentProduct(slug)),
+    onAddCommentProduct: (data, callBack) =>
+      dispatch(addCommentProduct(data, callBack)),
+    onAddToCart: (data, callBack) => dispatch(addToCart(data, callBack)),
+    onGetCartProduct: () => dispatch(getCartProduct()),
   };
 }
 

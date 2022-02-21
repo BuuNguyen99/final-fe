@@ -16,10 +16,13 @@ import { makeSelectMyProfile } from 'containers/Auth/selectors';
 import { getProfile } from 'containers/Auth/actions';
 import { CookiesStorage } from '../../shared/configs/cookie';
 import { useDetectOutsideClick } from './useDetectOutsideClick';
+import { getCartProduct } from '../../containers/Auth/actions';
+import { makeSelectCartProduct } from '../../containers/Auth/selectors';
+import { formatPriceVND } from '../../utils/common';
 
 const key = 'auth';
 
-function Header({ onGetMyProfile }) {
+function Header({ dataCart, onGetMyProfile, onGetCartProduct }) {
   const history = useHistory();
   const dropdownRef = useRef(null);
   const isAuthen = CookiesStorage.authenticated();
@@ -39,75 +42,42 @@ function Header({ onGetMyProfile }) {
 
   useEffect(() => {
     onGetMyProfile();
+    onGetCartProduct();
   }, []);
 
-  const content = (
+  const content = !dataCart?.isFetching && (
     <div className="products-list">
-      <div className="products-item">
-        <div className="left">
-          <div className="products-item__image">
-            <img
-              src="https://dji-vietnam.vn/wp-content/uploads/2021/07/dji-mini-se-1-400x400.jpg"
-              alt=""
-            />
+      {dataCart.data.length > 0 ? (
+        <>
+          {dataCart.data.map((el, index) => (
+            <Link
+              to={`/products/${el?.product?.slug}`}
+              className="products-item"
+              key={`item-p-${index}`}
+            >
+              <div className="left">
+                <div className="products-item__image">
+                  <img src={el?.product?.images[0]?.url} alt="" />
+                </div>
+                <div className="products-item__contents">
+                  <p className="title">{el?.product?.title}</p>
+                  <small className="quantity muted">x{el?.quantity}</small>
+                </div>
+              </div>
+              <p className="products-item__price">
+                {formatPriceVND(el?.unitPrice.toString())} VND
+              </p>
+            </Link>
+          ))}
+          <div className="view-cart">
+            <Button type="primary" danger>
+              View Cart
+            </Button>
           </div>
-          <div className="products-item__contents">
-            <p className="title">Flycam</p>
-            <small className="quantity muted">x4</small>
-          </div>
-        </div>
-        <p className="products-item__price">$299</p>
-      </div>
-      <div className="products-item">
-        <div className="left">
-          <div className="products-item__image">
-            <img
-              src="https://dji-vietnam.vn/wp-content/uploads/2021/07/dji-mini-se-1-400x400.jpg"
-              alt=""
-            />
-          </div>
-          <div className="products-item__contents">
-            <p className="title">Flycam</p>
-            <small className="quantity muted">x4</small>
-          </div>
-        </div>
-        <p className="products-item__price">$299</p>
-      </div>{' '}
-      <div className="products-item">
-        <div className="left">
-          <div className="products-item__image">
-            <img
-              src="https://dji-vietnam.vn/wp-content/uploads/2021/07/dji-mini-se-1-400x400.jpg"
-              alt=""
-            />
-          </div>
-          <div className="products-item__contents">
-            <p className="title">Flycam</p>
-            <small className="quantity muted">x4</small>
-          </div>
-        </div>
-        <p className="products-item__price">$299</p>
-      </div>{' '}
-      <div className="products-item">
-        <div className="left">
-          <div className="products-item__image">
-            <img
-              src="https://dji-vietnam.vn/wp-content/uploads/2021/07/dji-mini-se-1-400x400.jpg"
-              alt=""
-            />
-          </div>
-          <div className="products-item__contents">
-            <p className="title">Flycam</p>
-            <small className="quantity muted">x4</small>
-          </div>
-        </div>
-        <p className="products-item__price">$299</p>
-      </div>
-      <div className="view-cart">
-        <Button type="primary" danger>
-          View Cart
-        </Button>
-      </div>
+        </>
+      ) : (
+        'no data'
+      )}
     </div>
   );
 
@@ -230,11 +200,13 @@ function Header({ onGetMyProfile }) {
 
 const mapStateToProps = createStructuredSelector({
   dataProfile: makeSelectMyProfile(),
+  dataCart: makeSelectCartProduct(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     onGetMyProfile: () => dispatch(getProfile()),
+    onGetCartProduct: () => dispatch(getCartProduct()),
   };
 }
 

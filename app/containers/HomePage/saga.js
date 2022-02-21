@@ -15,6 +15,9 @@ import {
   EDIT_ACCOUNT,
   GET_DETAIL_PRODUCT_ACTION,
   UPDATE_PRODUCT_ACTION,
+  GET_LIST_COMMENT,
+  ADD_COMMENT_PRODUCT,
+  ADD_TO_CART,
 } from 'containers/HomePage/constants';
 
 const { API } = ENDPOINT;
@@ -231,6 +234,54 @@ export function* updateProductSaga({ id, data, callBack }) {
   }
 }
 
+function getListCommentApi(slug) {
+  return Api.get(API.GET_LIST_COMMENT_API, {
+    params: {
+      slug,
+    },
+  });
+}
+
+export function* getListCommentSaga({ slug }) {
+  try {
+    const response = yield call(getListCommentApi, slug);
+    const { data } = response;
+    yield put({ type: SUCCESS(GET_LIST_COMMENT), data });
+  } catch (error) {
+    yield put({ type: FAILURE(GET_LIST_COMMENT), error });
+  }
+}
+
+function addCommentApi(data) {
+  return Api.post(API.ADD_COMMENT_PRODUCT_API, data);
+}
+
+export function* addCommentSaga({ dataComment, callBack }) {
+  try {
+    yield call(addCommentApi, dataComment);
+    callBack?.();
+    yield put({ type: SUCCESS(ADD_COMMENT_PRODUCT) });
+  } catch (error) {
+    callBack?.(error);
+    yield put({ type: FAILURE(ADD_COMMENT_PRODUCT), error });
+  }
+}
+
+function addToCartApi(data) {
+  return Api.post(API.ADD_TO_CART_API, data);
+}
+
+export function* addToCartSaga({ dataProduct, callBack }) {
+  try {
+    yield call(addToCartApi, dataProduct);
+    yield put({ type: SUCCESS(ADD_TO_CART) });
+    callBack?.();
+  } catch (error) {
+    callBack?.(error);
+    yield put({ type: FAILURE(ADD_TO_CART), error });
+  }
+}
+
 export default function* authData() {
   yield takeEvery(REQUEST(GET_LIST_VIEW_ACTION), getViewHomeProduct);
   yield takeLatest(REQUEST(DELETE_PRODUCT_ACTION), deleteProductItemSaga);
@@ -244,4 +295,7 @@ export default function* authData() {
   yield takeLatest(REQUEST(EDIT_ACCOUNT), updateAccountSaga);
   yield takeLatest(REQUEST(GET_DETAIL_PRODUCT_ACTION), getDetailProductSaga);
   yield takeLatest(REQUEST(UPDATE_PRODUCT_ACTION), updateProductSaga);
+  yield takeLatest(REQUEST(GET_LIST_COMMENT), getListCommentSaga);
+  yield takeLatest(REQUEST(ADD_COMMENT_PRODUCT), addCommentSaga);
+  yield takeLatest(REQUEST(ADD_TO_CART), addToCartSaga);
 }

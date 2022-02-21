@@ -21,10 +21,7 @@ function SignIn({ dataUser, onLoginAccount, setIsForgotPassword }) {
   useInjectSaga({ key, saga });
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string()
-      .required('Username is required!')
-      .min(6, 'Username must be at least 6 characters!')
-      .max(20, 'Username must not exceed 20 characters!'),
+    username: Yup.string().required('Username is required!'),
     password: Yup.string()
       .required('Password is required!')
       .min(6, 'Password must be at least 6 characters!')

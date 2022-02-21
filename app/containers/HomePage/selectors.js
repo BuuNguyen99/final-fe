@@ -65,6 +65,12 @@ const makeSelectDetailProduct = () =>
     selectHomePage,
     homeState => homeState.dataDetailProduct,
   );
+
+const makeSelectDataComment = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.dataComment,
+  );
 export {
   selectHomePage,
   makeSelectDataLaptopHome,
@@ -78,4 +84,5 @@ export {
   makeSelectAddDataAccount,
   makeSelectDetailAccount,
   makeSelectDetailProduct,
+  makeSelectDataComment,
 };

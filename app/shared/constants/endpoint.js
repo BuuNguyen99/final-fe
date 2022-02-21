@@ -23,6 +23,11 @@ export const ENDPOINT = {
     GET_DETAIL_ACCOUNT_API: '/api/profile/getDetail',
     GET_DETAIL_PRODUCT_API: '/api/product/getDetail',
     UPDATE_PRODUCT_API: '/api/product/update',
+    GET_LIST_COMMENT_API: '/api/product/rating/get',
+    ADD_COMMENT_PRODUCT_API: '/api/product/rate',
+    GET_CART_PRODUCT: '/api/cart/getAll',
+    ADD_TO_CART_API: '/api/cart/addItem',
+    DELETE_ITEM_CART_API: '/api/cart/removeItem',
   },
   ROUTING: {
     AUTH: '/auth',

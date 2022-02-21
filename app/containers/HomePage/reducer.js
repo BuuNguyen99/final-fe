@@ -11,6 +11,7 @@ import {
   ADD_ACCOUNT,
   GET_DETAIL_ACCOUNT,
   GET_DETAIL_PRODUCT_ACTION,
+  GET_LIST_COMMENT,
 } from 'containers/HomePage/constants';
 
 export const initialState = {
@@ -54,6 +55,13 @@ export const initialState = {
   },
   dataDetailProduct: {
     data: [],
+    isFetching: false,
+  },
+  dataComment: {
+    data: [],
+    isFetching: false,
+  },
+  dataDeleteItemCart: {
     isFetching: false,
   },
 };
@@ -217,6 +225,18 @@ const authReducer = (state = initialState, action) =>
       case FAILURE(GET_DETAIL_PRODUCT_ACTION):
         draft.dataDetailProduct.data = [];
         draft.dataDetailProduct.isFetching = false;
+        break;
+      case REQUEST(GET_LIST_COMMENT):
+        draft.dataComment.data = [];
+        draft.dataComment.isFetching = true;
+        break;
+      case SUCCESS(GET_LIST_COMMENT):
+        draft.dataComment.data = action.data;
+        draft.dataComment.isFetching = false;
+        break;
+      case FAILURE(GET_LIST_COMMENT):
+        draft.dataComment.data = [];
+        draft.dataComment.isFetching = false;
         break;
       default:
         break;

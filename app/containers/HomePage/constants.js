@@ -15,3 +15,7 @@ export const ADD_ACCOUNT = 'productTechnology/HomePage/ADD_ACCOUNT';
 export const EDIT_ACCOUNT = 'productTechnology/HomePage/EDIT_ACCOUNT';
 export const GET_DETAIL_ACCOUNT =
   'productTechnology/HomePage/GET_DETAIL_ACCOUNT';
+export const GET_LIST_COMMENT = 'productTechnology/HomePage/GET_LIST_COMMENT';
+export const ADD_COMMENT_PRODUCT =
+  'productTechnology/HomePage/ADD_COMMENT_PRODUCT';
+export const ADD_TO_CART = 'productTechnology/HomePage/ADD_TO_CART';

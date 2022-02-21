@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
+import { formatPriceVND } from '../../utils/common';
 
 function SliderProducts({ data }) {
   const settings = {
@@ -24,7 +25,9 @@ function SliderProducts({ data }) {
                 </div>
                 <div className="show-item">
                   <h4 className="title">{el.title}</h4>
-                  <span className="money-sale">{el.price} VND</span>
+                  <span className="money-sale">
+                    {formatPriceVND(el.price.toString())} VND
+                  </span>
                 </div>
               </div>
             </Link>

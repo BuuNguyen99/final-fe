@@ -1,30 +1,49 @@
 import React from 'react';
+import { DeleteOutlined } from '@ant-design/icons';
+import 'antd/dist/antd.css';
+import { Popconfirm } from 'antd';
+import { formatPriceVND } from '../../../utils/common';
 
-function CartItem() {
+function CartItem({ data, onDeleteItemCart }) {
+  const confirm = () => {
+    onDeleteItemCart(data?.product?.id, data?.id);
+  };
+
   return (
     <div className="row order-list__item">
-      <div className="col-6 item-product">
+      <div className="col-5 item-product">
         <div className="image col-2">
-          <img
-            src="https://mega.com.vn/media/product/120_19584_laptop_apple_macbook_pro_myd82saa_space_grey_4.JPG"
-            alt="product"
-          />
+          <img src={data?.product?.images[0]?.url} alt="product" />
         </div>
         <div className="title col-10">
-          <p>
-            Laptop Apple Macbook Air 13 (MGND3SA/A) (Apple M1 8-core CPU and
-            7-core GPU/8GB RAM/256GB SSD/13.3 inch IPS/Mac OS/Vàng) (NEW)
-          </p>
+          <p>{data?.product?.title}</p>
         </div>
       </div>
       <div className="col-2">
-        <p className="price">31.000.000 VND</p>
+        <p className="price">
+          {formatPriceVND(data?.product?.price.toString())} VND
+        </p>
       </div>
       <div className="col-2">
-        <p className="amount">1</p>
+        <p className="amount">{data?.quantity}</p>
       </div>
       <div className="col-2">
-        <p className="money">31.000.000 VND</p>
+        <p className="money">
+          {formatPriceVND((data?.product?.price * data?.quantity).toString())}{' '}
+          VND
+        </p>
+      </div>
+      <div className="col-1">
+        <Popconfirm
+          title="Are you sure to delete this Item?"
+          onConfirm={confirm}
+          okText="Yes"
+          cancelText="No"
+        >
+          <span className="cursor-pointer">
+            <DeleteOutlined style={{ fontSize: '16px' }} />
+          </span>
+        </Popconfirm>
       </div>
     </div>
   );

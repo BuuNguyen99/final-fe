@@ -1,30 +1,45 @@
 import { Rate } from 'antd';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { formatPriceVND } from '../../../../utils/common';
 
 function RecentArrival({ dataPopular }) {
   return (
-    <div className="recent-arrival row">
-      {dataPopular.data.map(() => (
-        <div className="col-4 item-show">
-          <div className="item">
-            <p className="item__sell">Get up to 10% off Today Only!</p>
-            <div className="item__image">
-              <img
-                src="https://dji-vietnam.vn/wp-content/uploads/2021/07/dji-mini-se-1-400x400.jpg"
-                alt=""
-              />
-            </div>
-            <div className="item__infor">
-              <h3 className="title">BLack Iphone Speaker</h3>
-              <p className="price">
-                $ 249.99 / <span className="price-old">$ 249.99</span>
-              </p>
-              <Rate allowHalf defaultValue={2.5} disabled className="rating" />
-            </div>
-          </div>
+    <>
+      {!dataPopular?.isFetching && (
+        <div className="recent-arrival row">
+          {dataPopular.data.map((el, index) => (
+            <Link
+              to={`/products/${el.slug}`}
+              className="col-4 item-show"
+              key={`item-show-${index}`}
+            >
+              <div className="item">
+                {el.discount > 0 && (
+                  <p className="item__sell">{`Get up to ${
+                    el.discount
+                  }% off Today Only!`}</p>
+                )}
+                <div className="item__image">
+                  <img src={el.images[0].url} alt="" />
+                </div>
+                <div className="item__infor">
+                  <h3 className="title">{el.title}</h3>
+                  <p className="price">
+                    {formatPriceVND(el.price.toString())} VND
+                  </p>
+                  <Rate
+                    defaultValue={el.averageRating}
+                    disabled
+                    className="rating"
+                  />
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
-      ))}
-    </div>
+      )}
+    </>
   );
 }
 
