@@ -1,158 +1,240 @@
-import React from 'react';
+import React, { memo, useEffect } from 'react';
 import { Rate } from 'antd';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { useInjectReducer } from 'utils/injectReducer';
+import { useInjectSaga } from 'utils/injectSaga';
+import saga from 'containers/HomePage/saga';
+import reducer from 'containers/HomePage/reducer';
+import { formatPriceVND } from 'utils/common';
+import { createStructuredSelector } from 'reselect';
+import { getViewHomeProduct } from '../actions';
+import { makeSelectDataProduct } from '../selectors';
 
-function NewShop() {
+const key = 'home';
+
+function NewShop({ dataProduct, onGetViewHomeProduct }) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+
+  useEffect(() => {
+    const data = {
+      searchFilters: [],
+      sortOrder: {
+        ascendingOrder: [],
+        descendingOrder: ['createdAt'],
+      },
+      joinColumnProps: [],
+    };
+
+    const params = {
+      page: 0,
+      size: 9,
+    };
+    onGetViewHomeProduct(data, '', params);
+  }, []);
+
   return (
     <div className="new-shop container">
-      <p className="new-shop__mark">New Shop</p>
-      <h3 className="new-shop__header">An enormous storehouse of facts</h3>
-      <p className="new-shop__content">
-        The standard chunk of Lorem Ipsum used since the 1500s is reproduced
-        below for those interested
-      </p>
-      <div className="new-shop__list row">
-        <div className="new-shop__item col-4">
-          <div className="new-shop__item-product item-1">
-            <div className="show-top">
-              <span className="money-sale">
-                $ 249.99 / <span className="money">$ 249.99</span>
-              </span>
-              <div className="rate">
-                <Rate
-                  allowHalf
-                  defaultValue={2.5}
-                  disabled
-                  className="rating"
+      {!dataProduct?.isFetching && dataProduct?.data?.content?.length >= 7 ? (
+        <>
+          <p className="new-shop__mark">New Shop</p>
+          <h3 className="new-shop__header">An enormous storehouse of facts</h3>
+          <p className="new-shop__content">
+            The standard chunk of Lorem Ipsum used since the 1500s is reproduced
+            below for those interested
+          </p>
+          <div className="new-shop__list row">
+            <div className="new-shop__item col-4">
+              <div className="new-shop__item-product item-1">
+                <div className="show-top">
+                  <span className="money-sale">
+                    {formatPriceVND(
+                      dataProduct?.data?.content[0]?.price?.toString(),
+                    )}{' '}
+                    VND
+                  </span>
+                  <div className="rate">
+                    <Rate
+                      defaultValue={
+                        dataProduct?.data?.content[0]?.averageRating
+                      }
+                      disabled
+                      className="rating"
+                    />
+                  </div>
+                </div>
+                <img
+                  src={dataProduct?.data?.content[0]?.images[0]?.url}
+                  alt=""
+                />
+              </div>
+              <div className="new-shop__item-product item-2">
+                <div className="show-top">
+                  <span className="money-sale">
+                    {formatPriceVND(
+                      dataProduct?.data?.content[1]?.price?.toString(),
+                    )}{' '}
+                  </span>
+                  <div className="rate">
+                    <Rate
+                      defaultValue={
+                        dataProduct?.data?.content[1]?.averageRating
+                      }
+                      disabled
+                      className="rating"
+                    />
+                  </div>
+                </div>
+                <img
+                  src={dataProduct?.data?.content[1]?.images[0]?.url}
+                  alt=""
                 />
               </div>
             </div>
-            <img
-              src="https://cdn.hoanghamobile.com/i/preview/Uploads/2021/01/07/gps-nhom-silver.png"
-              alt=""
-            />
-          </div>
-          <div className="new-shop__item-product item-2">
-            <div className="show-top">
-              <span className="money-sale">
-                $ 249.99 / <span className="money">$ 249.99</span>
-              </span>
-              <div className="rate">
-                <Rate
-                  allowHalf
-                  defaultValue={2.5}
-                  disabled
-                  className="rating"
+            <div className="new-shop__item col-4">
+              <div className="new-shop__item-product item-3">
+                <div className="show-top">
+                  <span className="money-sale">
+                    {formatPriceVND(
+                      dataProduct?.data?.content[2]?.price?.toString(),
+                    )}{' '}
+                    VND
+                  </span>
+                  <div className="rate">
+                    <Rate
+                      defaultValue={
+                        dataProduct?.data?.content[2]?.averageRating
+                      }
+                      disabled
+                      className="rating"
+                    />
+                  </div>
+                </div>
+                <img
+                  src={dataProduct?.data?.content[2]?.images[0]?.url}
+                  alt=""
+                />
+              </div>
+              <div className="new-shop__item-product item-4">
+                <div className="show-top">
+                  <span className="money-sale">
+                    {formatPriceVND(
+                      dataProduct?.data?.content[3]?.price?.toString(),
+                    )}{' '}
+                    VND
+                  </span>
+                  <div className="rate">
+                    <Rate
+                      defaultValue={
+                        dataProduct?.data?.content[3]?.averageRating
+                      }
+                      disabled
+                      className="rating"
+                    />
+                  </div>
+                </div>
+                <img
+                  src={dataProduct?.data?.content[3]?.images[0]?.url}
+                  alt=""
+                />
+              </div>
+              <div className="new-shop__item-product item-5">
+                <div className="show-top">
+                  <span className="money-sale">
+                    {formatPriceVND(
+                      dataProduct?.data?.content[4]?.price?.toString(),
+                    )}{' '}
+                    VND
+                  </span>
+                  <div className="rate">
+                    <Rate
+                      defaultValue={
+                        dataProduct?.data?.content[4]?.averageRating
+                      }
+                      disabled
+                      className="rating"
+                    />
+                  </div>
+                </div>
+                <img
+                  src={dataProduct?.data?.content[4]?.images[0]?.url}
+                  alt=""
                 />
               </div>
             </div>
-            <img
-              src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-mini-select-cell-purple-202109?wid=940&hei=1112&fmt=png-alpha&.v=1629840724000"
-              alt=""
-            />
-          </div>
-        </div>
-        <div className="new-shop__item col-4">
-          <div className="new-shop__item-product item-3">
-            <div className="show-top">
-              <span className="money-sale">
-                $ 249.99 / <span className="money">$ 249.99</span>
-              </span>
-              <div className="rate">
-                <Rate
-                  allowHalf
-                  defaultValue={2.5}
-                  disabled
-                  className="rating"
+            <div className="new-shop__item col-4">
+              <div className="new-shop__item-product item-6">
+                <div className="show-top">
+                  <span className="money-sale">
+                    {formatPriceVND(
+                      dataProduct?.data?.content[5]?.price?.toString(),
+                    )}{' '}
+                    VND
+                  </span>
+                  <div className="rate">
+                    <Rate
+                      defaultValue={
+                        dataProduct?.data?.content[5]?.averageRating
+                      }
+                      disabled
+                      className="rating"
+                    />
+                  </div>
+                </div>
+                <img
+                  src={dataProduct?.data?.content[5]?.images[0]?.url}
+                  alt=""
+                />
+              </div>
+              <div className="new-shop__item-product item-7">
+                <div className="show-top">
+                  <span className="money-sale">
+                    {formatPriceVND(
+                      dataProduct?.data?.content[6]?.price?.toString(),
+                    )}{' '}
+                    VND
+                  </span>
+                  <div className="rate">
+                    <Rate
+                      defaultValue={
+                        dataProduct?.data?.content[6]?.averageRating
+                      }
+                      disabled
+                      className="rating"
+                    />
+                  </div>
+                </div>
+                <img
+                  src={dataProduct?.data?.content[6]?.images[0]?.url}
+                  alt=""
                 />
               </div>
             </div>
-            <img
-              src="https://dji-vietnam.vn/wp-content/uploads/2021/07/dji-mini-se-1-400x400.jpg"
-              alt=""
-            />
-          </div>
-          <div className="new-shop__item-product item-4">
-            <div className="show-top">
-              <span className="money-sale">
-                $ 249.99 / <span className="money">$ 249.99</span>
-              </span>
-              <div className="rate">
-                <Rate
-                  allowHalf
-                  defaultValue={2.5}
-                  disabled
-                  className="rating"
-                />
-              </div>
-            </div>
-            <img
-              src="https://loaaudio.com/wp-content/uploads/2020/07/marshall-Emberton-Bluetooth.png"
-              alt=""
-            />
-          </div>
-          <div className="new-shop__item-product item-5">
-            <div className="show-top">
-              <span className="money-sale">
-                $ 249.99 / <span className="money">$ 249.99</span>
-              </span>
-              <div className="rate">
-                <Rate
-                  allowHalf
-                  defaultValue={2.5}
-                  disabled
-                  className="rating"
-                />
-              </div>
-            </div>
-            <img
-              src="https://hc.com.vn/i/ecommerce/media/GS.007152_FEATURE_74775.jpg"
-              alt=""
-            />
-          </div>
-        </div>
-        <div className="new-shop__item col-4">
-          <div className="new-shop__item-product item-6">
-            <div className="show-top">
-              <span className="money-sale">
-                $ 249.99 / <span className="money">$ 249.99</span>
-              </span>
-              <div className="rate">
-                <Rate
-                  allowHalf
-                  defaultValue={2.5}
-                  disabled
-                  className="rating"
-                />
-              </div>
-            </div>
-            <img
-              src="https://product.hstatic.net/1000300544/product/iphone-13-pink-select-2021_d3ad549275cd49f4aef49722410002e5_grande.png"
-              alt=""
-            />
-          </div>
-          <div className="new-shop__item-product item-7">
-            <div className="show-top">
-              <span className="money-sale">
-                $ 249.99 / <span className="money">$ 249.99</span>
-              </span>
-              <div className="rate">
-                <Rate
-                  allowHalf
-                  defaultValue={2.5}
-                  disabled
-                  className="rating"
-                />
-              </div>
-            </div>
-            <img
-              src="https://www.marshallheadphones.com/on/demandware.static/-/Sites-zs-master-catalog/default/dw6b782c73/images/marshall/headphones/major-iv/medium/cart-marshall-major-iv-black.png"
-              alt=""
-            />
-          </div>
-        </div>
-      </div>
+          </div>{' '}
+        </>
+      ) : null}
     </div>
   );
 }
 
-export default NewShop;
+const mapStateToProps = createStructuredSelector({
+  dataProduct: makeSelectDataProduct(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onGetViewHomeProduct: (data, filter, params) =>
+      dispatch(getViewHomeProduct(data, filter, params)),
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(NewShop);

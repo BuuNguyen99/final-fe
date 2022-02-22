@@ -81,10 +81,12 @@ function ProductManagement({
               Add Product
             </Button>
             <Select
+              defaultValue={filterCategory}
               style={{ width: 200 }}
               onChange={handleFilter}
               placeholder="Select filter"
             >
+              <Option value="">All</Option>
               <Option value="laptop">Laptop & Table</Option>
               <Option value="camera">Camera & Flycam</Option>
               <Option value="smartwatch">Smartwatch</Option>
