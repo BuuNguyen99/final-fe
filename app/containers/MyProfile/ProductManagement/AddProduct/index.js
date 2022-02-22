@@ -73,6 +73,7 @@ function AddProduct({
   onEditProduct,
   isAdd,
 }) {
+  const slug = CookiesStorage.getCookieData('slug') || null;
   const [value, setValueEditor] = useState('');
   const [filterProduct, setFilterProduct] = useState('');
   const [fileImage, setFileImage] = useState([]);
@@ -143,14 +144,13 @@ function AddProduct({
   });
 
   useEffect(() => {
-    const slug = CookiesStorage.getCookieData('slug') || null;
     if (slug && isEdit) {
       onGetDetailProduct(slug);
     }
   }, []);
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && dataDetailProduct?.data.length !== 0) {
       setValueEditor(dataDetailProduct?.data?.content || '');
 
       setFileList(dataDetailProduct?.data?.account?.enabled);
@@ -233,8 +233,9 @@ function AddProduct({
     };
 
     onGetViewHomeProduct(data, params);
-    setIsAdd(true);
+    setIsAdd(false);
     setIsEdit(false);
+    onGetDetailProduct(slug);
     CookiesStorage.setCookieData('username', null);
     toast.success('Edit Product successfully');
   };
@@ -264,7 +265,7 @@ function AddProduct({
       size: 9999,
     };
     onGetViewHomeProduct(data, params);
-    setIsAdd(true);
+    setIsAdd(false);
     toast.success('Add Product successfully');
   };
 
@@ -297,7 +298,7 @@ function AddProduct({
   return (
     <div className="add-product-page">
       <h2 className="mt-3"> {isEdit ? 'Edit Product' : 'Add Product'}</h2>
-      {!isAdd || isLoading ? (
+      {isAdd || isLoading ? (
         <div className="register-form mt-4">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row mb-3">
@@ -450,7 +451,7 @@ function AddProduct({
               <button
                 type="button"
                 onClick={() => {
-                  setIsAdd(true);
+                  setIsAdd(false);
                   setIsEdit(false);
                   CookiesStorage.setCookieData('slug', null);
                 }}

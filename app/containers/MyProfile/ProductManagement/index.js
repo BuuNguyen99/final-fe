@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { Select, Button } from 'antd';
 import React, { useState, memo, useEffect } from 'react';
 import { compose } from 'redux';
@@ -35,7 +36,7 @@ function ProductManagement({
   useInjectSaga({ key, saga });
 
   const [filterCategory, setFilterCategory] = useState('');
-  const [isAddProduct, setIsAddProduct] = useState(true);
+  const [isAdd, setIsAdd] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
   const handleFilter = filter => {
@@ -67,7 +68,33 @@ function ProductManagement({
 
   return (
     <div className="product-management">
-      {isAddProduct ? (
+      {isAdd ? (
+        <AddProduct
+          setIsAdd={setIsAdd}
+          dataAddProduct={dataAddProduct}
+          onAddProductItem={onAddProductItem}
+          onGetViewHomeProduct={onGetViewHomeProduct}
+          isEdit={isEdit}
+          isAdd={isAdd}
+          setIsEdit={setIsEdit}
+          onGetDetailProduct={onGetDetailProduct}
+          onEditProduct={onEditProduct}
+          dataDetailProduct={dataDetailProduct}
+        />
+      ) : isEdit ? (
+        <AddProduct
+          setIsAdd={setIsAdd}
+          dataAddProduct={dataAddProduct}
+          onAddProductItem={onAddProductItem}
+          onGetViewHomeProduct={onGetViewHomeProduct}
+          isEdit={isEdit}
+          isAdd={isAdd}
+          setIsEdit={setIsEdit}
+          onGetDetailProduct={onGetDetailProduct}
+          onEditProduct={onEditProduct}
+          dataDetailProduct={dataDetailProduct}
+        />
+      ) : (
         <>
           <div className="product-management__filter mb-5">
             <Button
@@ -76,7 +103,7 @@ function ProductManagement({
               icon={<PlusOutlined />}
               size="large"
               className="add-product"
-              onClick={() => setIsAddProduct(false)}
+              onClick={() => setIsAdd(true)}
             >
               Add Product
             </Button>
@@ -95,27 +122,13 @@ function ProductManagement({
           </div>
           <div className="product-management__table">
             <EditableTable
-              setIsAdd={setIsAddProduct}
+              setIsAdd={setIsAdd}
               setIsEdit={setIsEdit}
               dataProduct={dataProduct?.data?.content}
               onDeleteProductItem={onDeleteProductItem}
             />
           </div>
         </>
-      ) : (
-        <AddProduct
-          setIsAddProduct={setIsAddProduct}
-          dataAddProduct={dataAddProduct}
-          onAddProductItem={onAddProductItem}
-          onGetViewHomeProduct={onGetViewHomeProduct}
-          setIsAdd={setIsAddProduct}
-          isEdit={isEdit}
-          isAdd={isAddProduct}
-          setIsEdit={setIsEdit}
-          onGetDetailProduct={onGetDetailProduct}
-          onEditProduct={onEditProduct}
-          dataDetailProduct={dataDetailProduct}
-        />
       )}
     </div>
   );
