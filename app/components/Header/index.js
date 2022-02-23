@@ -22,7 +22,7 @@ import { formatPriceVND } from '../../utils/common';
 
 const key = 'auth';
 
-function Header({ dataCart, onGetMyProfile, onGetCartProduct }) {
+function Header({ dataProfile, dataCart, onGetMyProfile, onGetCartProduct }) {
   const history = useHistory();
   const dropdownRef = useRef(null);
   const isAuthen = CookiesStorage.authenticated();
@@ -44,6 +44,10 @@ function Header({ dataCart, onGetMyProfile, onGetCartProduct }) {
     onGetMyProfile();
     onGetCartProduct();
   }, []);
+
+  const handleBuyNow = () => {
+    history.push('/order-list');
+  };
 
   const content = !dataCart?.isFetching && (
     <div className="products-list">
@@ -70,8 +74,8 @@ function Header({ dataCart, onGetMyProfile, onGetCartProduct }) {
             </Link>
           ))}
           <div className="view-cart">
-            <Button type="primary" danger>
-              View Cart
+            <Button type="primary" danger onClick={handleBuyNow}>
+              Buy Now
             </Button>
           </div>
         </>
@@ -153,14 +157,18 @@ function Header({ dataCart, onGetMyProfile, onGetCartProduct }) {
             </div>
             <div className="header__menu-icon">
               <ul className="icon-list">
-                <li className="icon-item">
-                  <p className="icon-link">
-                    <Popover placement="bottomRight" content={content}>
-                      <BsCart2 className="icon icon-user" />
-                      {isAuthen && <span className="mark">3</span>}
-                    </Popover>
-                  </p>
-                </li>
+                {dataProfile?.profile?.account?.roles[0]?.name === 'USER' && (
+                  <li className="icon-item">
+                    <p className="icon-link">
+                      <Popover placement="bottomRight" content={content}>
+                        <BsCart2 className="icon icon-user" />
+                        {dataCart?.data?.length > 0 && (
+                          <span className="mark">{dataCart?.data?.length}</span>
+                        )}
+                      </Popover>
+                    </p>
+                  </li>
+                )}
                 <li className="icon-item">
                   <a
                     href

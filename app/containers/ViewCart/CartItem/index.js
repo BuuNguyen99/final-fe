@@ -15,7 +15,7 @@ function CartItem({ data, onDeleteItemCart }) {
         <div className="image col-2">
           <img src={data?.product?.images[0]?.url} alt="product" />
         </div>
-        <div className="title col-10">
+        <div className="mx-3 title col-10">
           <p>{data?.product?.title}</p>
         </div>
       </div>
