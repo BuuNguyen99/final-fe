@@ -232,7 +232,7 @@ function AddProduct({
       size: 9999,
     };
 
-    onGetViewHomeProduct(data, params);
+    onGetViewHomeProduct(data, '', params);
     setIsAdd(false);
     setIsEdit(false);
     onGetDetailProduct(slug);
@@ -264,7 +264,7 @@ function AddProduct({
       page: 0,
       size: 9999,
     };
-    onGetViewHomeProduct(data, params);
+    onGetViewHomeProduct(data, '', params);
     setIsAdd(false);
     toast.success('Add Product successfully');
   };

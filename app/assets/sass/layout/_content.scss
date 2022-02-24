@@ -68,8 +68,9 @@
   padding: 30px;
   transition: all 0.2s ease-in-out;
   &__sell {
-    font-family: 500;
+    font-weight: 500;
     font-size: 1.2rem;
+    min-height: 24px;
   }
   &__image {
     width: 100%;

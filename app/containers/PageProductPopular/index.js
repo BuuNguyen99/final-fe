@@ -48,11 +48,10 @@ function PageProductPopular({ dataPopular, onGetViewHomeProduct }) {
                   key={`item-${index}`}
                 >
                   <div className="item">
-                    {el.discount > 0 && (
-                      <p className="item__sell">{`Get up to ${
-                        el.discount
-                      }% off Today Only!`}</p>
-                    )}
+                    <p className="item__sell">
+                      {el?.discount > 0 &&
+                        `Get up to ${el?.discount}% off Today Only!`}
+                    </p>
                     <div className="item__image">
                       <img src={el.images[0].url} alt="" />
                     </div>
