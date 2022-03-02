@@ -12,6 +12,7 @@ import {
   ADD_PRODUCT_ACTION,
   GET_CART_PRODUCT,
   DELETE_ITEM_CART,
+  GET_LIST_PRODUCT,
 } from 'containers/Auth/constants';
 
 export const initialState = {
@@ -42,6 +43,10 @@ export const initialState = {
     isFetching: false,
   },
   dataCart: {
+    data: [],
+    isFetching: false,
+  },
+  dataProduct: {
     data: [],
     isFetching: false,
   },
@@ -155,6 +160,19 @@ const authReducer = (state = initialState, action) =>
         draft.dataCart.data.splice(indexItem, 1);
         break;
       case FAILURE(DELETE_ITEM_CART):
+        break;
+
+      case REQUEST(GET_LIST_PRODUCT):
+        draft.dataProduct.isFetching = true;
+
+        break;
+      case SUCCESS(GET_LIST_PRODUCT):
+        draft.dataProduct.data = action.data;
+        draft.dataProduct.isFetching = false;
+        break;
+      case FAILURE(GET_LIST_PRODUCT):
+        draft.dataProduct.data = [];
+        draft.dataProduct.isFetching = false;
         break;
       default:
         break;

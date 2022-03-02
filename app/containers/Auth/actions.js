@@ -11,6 +11,7 @@ import {
   ADD_PRODUCT_ACTION,
   GET_CART_PRODUCT,
   DELETE_ITEM_CART,
+  GET_LIST_PRODUCT,
 } from 'containers/Auth/constants';
 
 export function registerAccount(data, callBack) {
@@ -92,5 +93,13 @@ export function deleteItemCart(id, idItem) {
     type: REQUEST(DELETE_ITEM_CART),
     id,
     idItem,
+  };
+}
+
+export function getViewHomeProduct(dataProduct, params) {
+  return {
+    type: REQUEST(GET_LIST_PRODUCT),
+    dataProduct,
+    params,
   };
 }

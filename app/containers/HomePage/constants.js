@@ -1,4 +1,5 @@
-export const GET_LIST_PRODUCT = 'productTechnology/HomePage/GET_LIST_PRODUCT';
+export const GET_LIST_VIEW_ACTION =
+  'productTechnology/HomePage/GET_LIST_VIEW_ACTION';
 export const DELETE_PRODUCT_ACTION =
   'productTechnology/HomePage/DELETE_PRODUCT_ACTION';
 export const UPDATE_PRODUCT_ACTION =

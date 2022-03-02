@@ -16,13 +16,27 @@ import { makeSelectMyProfile } from 'containers/Auth/selectors';
 import { getProfile } from 'containers/Auth/actions';
 import { CookiesStorage } from '../../shared/configs/cookie';
 import { useDetectOutsideClick } from './useDetectOutsideClick';
-import { getCartProduct } from '../../containers/Auth/actions';
-import { makeSelectCartProduct } from '../../containers/Auth/selectors';
+import {
+  getCartProduct,
+  getViewHomeProduct,
+} from '../../containers/Auth/actions';
+import {
+  makeSelectCartProduct,
+  makeSelectDataProduct,
+} from '../../containers/Auth/selectors';
 import { formatPriceVND } from '../../utils/common';
+import SearchSuggestions from '../SearchSuggestions';
 
 const key = 'auth';
 
-function Header({ dataProfile, dataCart, onGetMyProfile, onGetCartProduct }) {
+function Header({
+  dataProfile,
+  dataCart,
+  onGetMyProfile,
+  onGetCartProduct,
+  dataProduct,
+  onGetListProduct,
+}) {
   const history = useHistory();
   const dropdownRef = useRef(null);
   const isAuthen = CookiesStorage.authenticated();
@@ -43,6 +57,27 @@ function Header({ dataProfile, dataCart, onGetMyProfile, onGetCartProduct }) {
   useEffect(() => {
     onGetMyProfile();
     onGetCartProduct();
+
+    const data = {
+      searchFilters: [
+        {
+          property: 'category',
+          operator: 'LIKE',
+          value: '',
+        },
+      ],
+      sortOrder: {
+        ascendingOrder: [],
+        descendingOrder: [],
+      },
+      joinColumnProps: [],
+    };
+
+    const params = {
+      page: 0,
+      size: 999,
+    };
+    onGetListProduct(data, params);
   }, []);
 
   const handleBuyNow = () => {
@@ -155,6 +190,11 @@ function Header({ dataProfile, dataCart, onGetMyProfile, onGetCartProduct }) {
                 </li>
               </ul>
             </div>
+            {!dataProduct?.isFetching && (
+              <div className="header-search-suggestions">
+                <SearchSuggestions data={dataProduct?.data?.content || []} />
+              </div>
+            )}
             <div className="header__menu-icon">
               <ul className="icon-list">
                 {dataProfile?.profile?.account?.roles[0]?.name === 'USER' && (
@@ -209,12 +249,15 @@ function Header({ dataProfile, dataCart, onGetMyProfile, onGetCartProduct }) {
 const mapStateToProps = createStructuredSelector({
   dataProfile: makeSelectMyProfile(),
   dataCart: makeSelectCartProduct(),
+  dataProduct: makeSelectDataProduct(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     onGetMyProfile: () => dispatch(getProfile()),
     onGetCartProduct: () => dispatch(getCartProduct()),
+    onGetListProduct: (data, params) =>
+      dispatch(getViewHomeProduct(data, params)),
   };
 }
 
