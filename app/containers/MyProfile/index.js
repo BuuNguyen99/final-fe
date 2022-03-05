@@ -118,12 +118,11 @@ function MyProfile({
                 onChangePasswordAccount={onChangePasswordAccount}
               />
             </TabPane>
-            <TabPane tab="My Purchase" key="3">
-              There&apos;s nothing here
-            </TabPane>
-            <TabPane tab="My Vouchers" key="4">
-              There&apos;s nothing here
-            </TabPane>
+            {dataProfile?.profile?.account?.roles[0]?.name === 'USER' && (
+              <TabPane tab="List of orders placed" key="3">
+                There&apos;s nothing here
+              </TabPane>
+            )}
             {dataProfile?.profile?.account?.roles[0]?.name === 'ADMIN' && (
               <TabPane tab="Product Management" key="5">
                 <ProductManagement
