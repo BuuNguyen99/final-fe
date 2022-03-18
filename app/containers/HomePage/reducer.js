@@ -12,6 +12,10 @@ import {
   GET_DETAIL_ACCOUNT,
   GET_DETAIL_PRODUCT_ACTION,
   GET_LIST_COMMENT,
+  GET_LIST_ORDER,
+  GET_TOTAL_REVENUE,
+  GET_FIVE_USER,
+  GET_FIVE_PRODUCT,
 } from 'containers/HomePage/constants';
 
 export const initialState = {
@@ -62,6 +66,22 @@ export const initialState = {
     isFetching: false,
   },
   dataDeleteItemCart: {
+    isFetching: false,
+  },
+  dataGetListOrder: {
+    data: [],
+    isFetching: false,
+  },
+  dataTotalRevenue: {
+    data: [],
+    isFetching: false,
+  },
+  dataFiveUser: {
+    data: [],
+    isFetching: false,
+  },
+  dataFiveProduct: {
+    data: [],
     isFetching: false,
   },
 };
@@ -237,6 +257,51 @@ const authReducer = (state = initialState, action) =>
       case FAILURE(GET_LIST_COMMENT):
         draft.dataComment.data = [];
         draft.dataComment.isFetching = false;
+        break;
+      case REQUEST(GET_LIST_ORDER):
+        draft.dataGetListOrder.data = [];
+        draft.dataGetListOrder.isFetching = true;
+        break;
+      case SUCCESS(GET_LIST_ORDER):
+        draft.dataGetListOrder.data = action.data;
+        draft.dataGetListOrder.isFetching = false;
+        break;
+      case FAILURE(GET_LIST_ORDER):
+        draft.dataGetListOrder.data = [];
+        draft.dataGetListOrder.isFetching = false;
+        break;
+      case REQUEST(GET_TOTAL_REVENUE):
+        draft.dataTotalRevenue.isFetching = true;
+        break;
+      case SUCCESS(GET_TOTAL_REVENUE):
+        draft.dataTotalRevenue.data = action.data;
+        draft.dataTotalRevenue.isFetching = false;
+        break;
+      case FAILURE(GET_TOTAL_REVENUE):
+        draft.dataTotalRevenue.data = [];
+        draft.dataTotalRevenue.isFetching = false;
+        break;
+      case REQUEST(GET_FIVE_USER):
+        draft.dataFiveUser.isFetching = true;
+        break;
+      case SUCCESS(GET_FIVE_USER):
+        draft.dataFiveUser.data = action.data;
+        draft.dataFiveUser.isFetching = false;
+        break;
+      case FAILURE(GET_FIVE_USER):
+        draft.dataFiveUser.data = [];
+        draft.dataFiveUser.isFetching = false;
+        break;
+      case REQUEST(GET_FIVE_PRODUCT):
+        draft.dataFiveProduct.isFetching = true;
+        break;
+      case SUCCESS(GET_FIVE_PRODUCT):
+        draft.dataFiveProduct.data = action.data;
+        draft.dataFiveProduct.isFetching = false;
+        break;
+      case FAILURE(GET_FIVE_PRODUCT):
+        draft.dataFiveProduct.data = [];
+        draft.dataFiveProduct.isFetching = false;
         break;
       default:
         break;

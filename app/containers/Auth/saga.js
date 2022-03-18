@@ -16,6 +16,8 @@ import {
   GET_CART_PRODUCT,
   DELETE_ITEM_CART,
   GET_LIST_PRODUCT,
+  VERIFY_ACCOUNT,
+  BUY_CART,
 } from 'containers/Auth/constants';
 
 const { API } = ENDPOINT;
@@ -231,6 +233,47 @@ export function* getViewHomeProduct({ dataProduct, params }) {
   }
 }
 
+function verifyAccountApi(query) {
+  return Api.get(API.VERIFY_ACCOUNT_API, {
+    params: {
+      ...query,
+    },
+  });
+}
+
+export function* verifyAccountSaga({ data }) {
+  const query = {
+    code: data,
+  };
+  try {
+    yield call(verifyAccountApi, query);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+}
+
+function buyCartApi(data) {
+  return Api.post(API.BUY_CART_API, data);
+}
+
+export function* buyCartSaga({ dataCart, callBack }) {
+  try {
+    const response = yield call(buyCartApi, dataCart);
+    const { data } = response;
+
+    yield put({ type: SUCCESS(BUY_CART), data });
+    if (data.url) {
+      callBack(null, data.url);
+      return;
+    }
+    callBack();
+  } catch (error) {
+    callBack(error, null);
+    yield put({ type: SUCCESS(BUY_CART), error });
+  }
+}
+
 export default function* authData() {
   yield takeLatest(REQUEST(REMOVE_TOKEN), signOut);
   yield takeLatest(REQUEST(GET_PROFILE), getMyProfile);
@@ -244,4 +287,6 @@ export default function* authData() {
   yield takeLatest(REQUEST(GET_CART_PRODUCT), getCartApiSaga);
   yield takeLatest(REQUEST(DELETE_ITEM_CART), deleteItemCartSaga);
   yield takeLatest(REQUEST(GET_LIST_PRODUCT), getViewHomeProduct);
+  yield takeLatest(REQUEST(VERIFY_ACCOUNT), verifyAccountSaga);
+  yield takeLatest(REQUEST(BUY_CART), buyCartSaga);
 }

@@ -329,3 +329,62 @@
     background-color: #f4f9fc;
   }
 }
+
+.page-order {
+  min-height: 80vh;
+  text-align: center;
+  margin-top: 30px;
+
+  .order-success {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 500px;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+.order-list {
+  &__header {
+    border-bottom: solid 1px #eee;
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px 0;
+    border-bottom: solid 1px #eee;
+  }
+  .header-item {
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+    padding-bottom: 0.75em;
+    font-size: 1.2rem;
+  }
+
+  .item-product {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    p {
+      color: #333;
+      font-size: 14px;
+    }
+  }
+}
+
+.revenue {
+  &__chart-title {
+    display: flex;
+    justify-content: space-between;
+  }
+}

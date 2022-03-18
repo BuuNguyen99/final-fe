@@ -15,6 +15,10 @@ import {
   GET_DETAIL_PRODUCT_ACTION,
   ADD_COMMENT_PRODUCT,
   ADD_TO_CART,
+  GET_LIST_ORDER,
+  GET_TOTAL_REVENUE,
+  GET_FIVE_USER,
+  GET_FIVE_PRODUCT,
 } from 'containers/HomePage/constants';
 
 export function getViewHomeProduct(dataProduct, filter, params) {
@@ -133,5 +137,30 @@ export function addToCart(dataProduct, callBack) {
     type: REQUEST(ADD_TO_CART),
     dataProduct,
     callBack,
+  };
+}
+
+export function getListOrder() {
+  return {
+    type: REQUEST(GET_LIST_ORDER),
+  };
+}
+
+export function getTotalRevenue(datetime) {
+  return {
+    type: REQUEST(GET_TOTAL_REVENUE),
+    datetime,
+  };
+}
+
+export function getFiveUser() {
+  return {
+    type: REQUEST(GET_FIVE_USER),
+  };
+}
+
+export function getFiveProduct() {
+  return {
+    type: REQUEST(GET_FIVE_PRODUCT),
   };
 }

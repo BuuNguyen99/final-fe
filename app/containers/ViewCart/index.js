@@ -3,12 +3,23 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { deleteItemCart, getCartProduct } from '../Auth/actions';
-import { makeSelectCartProduct } from '../Auth/selectors';
+import { buyCart, deleteItemCart, getCartProduct } from '../Auth/actions';
+import {
+  makeSelectCartProduct,
+  makeSelectDataBuyCart,
+  makeSelectMyProfile,
+} from '../Auth/selectors';
 import CartItem from './CartItem';
 import Payment from './Payment';
 
-function ViewCart({ dataCart, onDeleteItemCart, onGetCartProduct }) {
+function ViewCart({
+  dataCart,
+  onDeleteItemCart,
+  onGetCartProduct,
+  dataProfile,
+  onBuyCart,
+  dataBuyCart,
+}) {
   return (
     <div className="view-cart">
       <div className="page-product-list__banner">
@@ -52,7 +63,13 @@ function ViewCart({ dataCart, onDeleteItemCart, onGetCartProduct }) {
               />
             ))}
             <div className="payment">
-              <Payment dataCart={dataCart} />
+              <Payment
+                dataCart={dataCart}
+                dataProfile={dataProfile}
+                onBuyCart={onBuyCart}
+                dataBuyCart={dataBuyCart}
+                onGetCartProduct={onGetCartProduct}
+              />
             </div>
           </>
         )}
@@ -62,13 +79,16 @@ function ViewCart({ dataCart, onDeleteItemCart, onGetCartProduct }) {
 }
 
 const mapStateToProps = createStructuredSelector({
+  dataProfile: makeSelectMyProfile(),
   dataCart: makeSelectCartProduct(),
+  dataBuyCart: makeSelectDataBuyCart(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     onGetCartProduct: () => dispatch(getCartProduct()),
     onDeleteItemCart: (data, idItem) => dispatch(deleteItemCart(data, idItem)),
+    onBuyCart: (data, callBack) => dispatch(buyCart(data, callBack)),
   };
 }
 

@@ -71,6 +71,29 @@ const makeSelectDataComment = () =>
     selectHomePage,
     homeState => homeState.dataComment,
   );
+
+const makeSelectDataListOrder = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.dataGetListOrder,
+  );
+
+const makeSelectDataTotalRevenue = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.dataTotalRevenue,
+  );
+const makeSelectDataFiveUser = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.dataFiveUser,
+  );
+const makeSelectDataFiveProduct = () =>
+  createSelector(
+    selectHomePage,
+    homeState => homeState.dataFiveProduct,
+  );
+
 export {
   selectHomePage,
   makeSelectDataLaptopHome,
@@ -85,4 +108,8 @@ export {
   makeSelectDetailAccount,
   makeSelectDetailProduct,
   makeSelectDataComment,
+  makeSelectDataListOrder,
+  makeSelectDataTotalRevenue,
+  makeSelectDataFiveUser,
+  makeSelectDataFiveProduct,
 };

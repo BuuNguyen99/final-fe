@@ -11,3 +11,5 @@ export const ADD_PRODUCT_ACTION = 'productTechnology/Auth/ADD_PRODUCT_ACTION';
 export const GET_CART_PRODUCT = 'productTechnology/Auth/GET_CART_PRODUCT';
 export const DELETE_ITEM_CART = 'productTechnology/Auth/DELETE_ITEM_CART';
 export const GET_LIST_PRODUCT = 'productTechnology/Auth/GET_LIST_PRODUCT';
+export const VERIFY_ACCOUNT = 'productTechnology/Auth/VERIFY_ACCOUNT';
+export const BUY_CART = 'productTechnology/Auth/BUY_CART';

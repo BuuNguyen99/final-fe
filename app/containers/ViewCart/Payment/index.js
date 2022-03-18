@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import 'antd/dist/antd.css';
 import { Radio, Space, Button } from 'antd';
-import { formatPriceVND } from '../../../utils/common';
+import { formatPriceVND } from 'utils/common';
 
-function Payment({ dataCart }) {
-  const [valueRadio, setValueRadio] = useState(1);
+function Payment({ dataCart, dataProfile, onBuyCart, onGetCartProduct }) {
+  const history = useHistory();
+  const [valueRadio, setValueRadio] = useState('CASH');
   const validationSchema = Yup.object().shape({
-    fullname: Yup.string().required('Full Name is required'),
+    firstname: Yup.string().required('First Name is required'),
+    lastname: Yup.string().required('Last Name is required'),
     phoneNumber: Yup.string()
       .required('Phone number is required!')
       .min(10, 'Please enter a valid phone number!')
@@ -34,21 +37,59 @@ function Payment({ dataCart }) {
     }
     setState(total);
   }, [dataCart]);
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const onSubmit = data => {
-    console.log(JSON.stringify(data, null, 2));
+    const arrayIdCard = dataCart?.data?.map(item => item.id);
+    const dataCartForm = {
+      firstname: data.firstname,
+      lastname: data.lastname,
+      email: data.email,
+      mobile: data.phoneNumber,
+      address: data.address,
+      content: data.note,
+      total: state,
+      method: valueRadio,
+      bankCode: '',
+      itemsId: [...arrayIdCard],
+    };
+    onBuyCart(dataCartForm, handleCallBackBuy);
   };
 
   const onChangeRadio = e => {
     setValueRadio(e.target.value);
   };
+
+  const handleCallBackBuy = (error, linkBank) => {
+    if (error) {
+      history.push('/order/error');
+      return;
+    }
+    if (linkBank) {
+      window.open(linkBank, '_self');
+      return;
+    }
+    onGetCartProduct();
+    history.push('/order/success');
+  };
+
+  useEffect(() => {
+    if (dataProfile) {
+      setValue('firstname', dataProfile?.profile?.firstname);
+      setValue('lastname', dataProfile?.profile?.lastname);
+      setValue('phoneNumber', dataProfile?.profile?.mobile || '');
+      setValue('email', dataProfile?.profile?.account?.email || '');
+      setValue('address', dataProfile?.profile?.address || '');
+    }
+  }, [dataProfile]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -59,20 +100,34 @@ function Payment({ dataCart }) {
             <p>To continue ordering, please enter the information below</p>
             <div className="row">
               <div className="form-group col-6 mb-3">
-                <label className="required">Full Name</label>
+                <label className="required">First Name</label>
                 <input
-                  name="fullname"
+                  name="firstname"
                   type="text"
-                  {...register('fullname')}
+                  {...register('firstname')}
                   className={`form-control ${
-                    errors.fullname ? 'is-invalid' : ''
+                    errors.firstname ? 'is-invalid' : ''
                   }`}
                 />
                 <div className="invalid-feedback">
-                  {errors.fullname?.message}
+                  {errors.firstname?.message}
                 </div>
               </div>
               <div className="form-group col-6 mb-3">
+                <label className="required">Last Name</label>
+                <input
+                  name="lastname"
+                  type="text"
+                  {...register('lastname')}
+                  className={`form-control ${
+                    errors.lastname ? 'is-invalid' : ''
+                  }`}
+                />
+                <div className="invalid-feedback">
+                  {errors.lastname?.message}
+                </div>
+              </div>
+              <div className="form-group col-12 mb-3">
                 <label className="required">Phone</label>
                 <input
                   name="phoneNumber"
@@ -129,10 +184,12 @@ function Payment({ dataCart }) {
             <h3>payment methods</h3>
             <Radio.Group onChange={onChangeRadio} value={valueRadio}>
               <Space direction="vertical">
-                <Radio value={1}>
+                <Radio value="CASH">
                   Cash payment on receipt (cash/swipe ATM card, Visa, Master)
                 </Radio>
-                <Radio value={2}>Payment via bank transfer (recommended)</Radio>
+                <Radio value="BANK">
+                  Payment via bank transfer (recommended)
+                </Radio>
               </Space>
             </Radio.Group>
           </div>

@@ -20,3 +20,7 @@ export const GET_LIST_COMMENT = 'productTechnology/HomePage/GET_LIST_COMMENT';
 export const ADD_COMMENT_PRODUCT =
   'productTechnology/HomePage/ADD_COMMENT_PRODUCT';
 export const ADD_TO_CART = 'productTechnology/HomePage/ADD_TO_CART';
+export const GET_LIST_ORDER = 'productTechnology/HomePage/GET_LIST_ORDER';
+export const GET_TOTAL_REVENUE = 'productTechnology/HomePage/GET_TOTAL_REVENUE';
+export const GET_FIVE_USER = 'productTechnology/HomePage/GET_FIVE_USER';
+export const GET_FIVE_PRODUCT = 'productTechnology/HomePage/GET_FIVE_PRODUCT';

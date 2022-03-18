@@ -63,6 +63,12 @@ const makeSelectDataProduct = () =>
     homeState => homeState.dataProduct,
   );
 
+const makeSelectDataBuyCart = () =>
+  createSelector(
+    selectAuth,
+    homeState => homeState.dataBuyCart,
+  );
+
 export {
   selectAuth,
   makeSelectMyProfile,
@@ -75,4 +81,5 @@ export {
   makeSelectAddProduct,
   makeSelectCartProduct,
   makeSelectDataProduct,
+  makeSelectDataBuyCart,
 };

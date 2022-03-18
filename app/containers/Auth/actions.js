@@ -12,6 +12,8 @@ import {
   GET_CART_PRODUCT,
   DELETE_ITEM_CART,
   GET_LIST_PRODUCT,
+  VERIFY_ACCOUNT,
+  BUY_CART,
 } from 'containers/Auth/constants';
 
 export function registerAccount(data, callBack) {
@@ -101,5 +103,20 @@ export function getViewHomeProduct(dataProduct, params) {
     type: REQUEST(GET_LIST_PRODUCT),
     dataProduct,
     params,
+  };
+}
+
+export function verifyAccount(data) {
+  return {
+    type: REQUEST(VERIFY_ACCOUNT),
+    data,
+  };
+}
+
+export function buyCart(dataCart, callBack) {
+  return {
+    type: REQUEST(BUY_CART),
+    dataCart,
+    callBack,
   };
 }

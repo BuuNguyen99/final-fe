@@ -16,6 +16,8 @@ import PageProductListCamera from 'containers/PageProductListCamera';
 import MyProfile from 'containers/MyProfile';
 import PageProductPopular from 'containers/PageProductPopular';
 import ViewCart from 'containers/ViewCart';
+import SuccessOrder from 'containers/PageOrder/SuccessOrder';
+import ErrorOrder from 'containers/PageOrder/ErrorOrder';
 
 export default function MasterLayout() {
   return (
@@ -45,6 +47,8 @@ export default function MasterLayout() {
             <Route path="/popular-list" component={PageProductPopular} />
             <Route path="/order-list" component={ViewCart} />
             <Route path="/my-profile" component={MyProfile} />
+            <Route path="/order/success" component={SuccessOrder} />
+            <Route path="/order/error" component={ErrorOrder} />
           </Switch>
         </div>
         <Footer />

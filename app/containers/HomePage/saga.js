@@ -18,6 +18,10 @@ import {
   GET_LIST_COMMENT,
   ADD_COMMENT_PRODUCT,
   ADD_TO_CART,
+  GET_LIST_ORDER,
+  GET_TOTAL_REVENUE,
+  GET_FIVE_USER,
+  GET_FIVE_PRODUCT,
 } from 'containers/HomePage/constants';
 
 const { API } = ENDPOINT;
@@ -282,6 +286,66 @@ export function* addToCartSaga({ dataProduct, callBack }) {
   }
 }
 
+function getListOrderApi() {
+  return Api.get(API.GET_LIST_ORDER_API);
+}
+
+export function* getListOrderSaga() {
+  try {
+    const response = yield call(getListOrderApi);
+    const { data } = response;
+    yield put({ type: SUCCESS(GET_LIST_ORDER), data });
+  } catch (error) {
+    yield put({ type: FAILURE(GET_LIST_ORDER), error });
+  }
+}
+
+function getTotalRevenueApi(data) {
+  return Api.get(API.GET_LIST_TOTAL_REVENUE, {
+    params: {
+      datetime: data,
+    },
+  });
+}
+
+export function* getListTotalRevenue({ datetime }) {
+  try {
+    const response = yield call(getTotalRevenueApi, datetime);
+    const { data } = response;
+    yield put({ type: SUCCESS(GET_TOTAL_REVENUE), data });
+  } catch (error) {
+    yield put({ type: FAILURE(GET_TOTAL_REVENUE), error });
+  }
+}
+
+function getFiveUser() {
+  return Api.get(API.GET_LIST_FIVE_USER);
+}
+
+export function* getListFiveUser() {
+  try {
+    const response = yield call(getFiveUser);
+    const { data } = response;
+    yield put({ type: SUCCESS(GET_FIVE_USER), data });
+  } catch (error) {
+    yield put({ type: FAILURE(GET_FIVE_USER), error });
+  }
+}
+
+function getFiveProduct() {
+  return Api.get(API.GET_LIST_FIVE_PRODUCT);
+}
+
+export function* getListFiveProduct() {
+  try {
+    const response = yield call(getFiveProduct);
+    const { data } = response;
+    yield put({ type: SUCCESS(GET_FIVE_PRODUCT), data });
+  } catch (error) {
+    yield put({ type: FAILURE(GET_FIVE_PRODUCT), error });
+  }
+}
+
 export default function* authData() {
   yield takeEvery(REQUEST(GET_LIST_VIEW_ACTION), getViewHomeProduct);
   yield takeLatest(REQUEST(DELETE_PRODUCT_ACTION), deleteProductItemSaga);
@@ -298,4 +362,8 @@ export default function* authData() {
   yield takeLatest(REQUEST(GET_LIST_COMMENT), getListCommentSaga);
   yield takeLatest(REQUEST(ADD_COMMENT_PRODUCT), addCommentSaga);
   yield takeLatest(REQUEST(ADD_TO_CART), addToCartSaga);
+  yield takeLatest(REQUEST(GET_LIST_ORDER), getListOrderSaga);
+  yield takeLatest(REQUEST(GET_TOTAL_REVENUE), getListTotalRevenue);
+  yield takeLatest(REQUEST(GET_FIVE_USER), getListFiveUser);
+  yield takeLatest(REQUEST(GET_FIVE_PRODUCT), getListFiveProduct);
 }

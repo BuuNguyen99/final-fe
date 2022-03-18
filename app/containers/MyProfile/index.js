@@ -22,6 +22,8 @@ import ChangeInfo from './ChangeInfo';
 import ChangePassword from './ChangePassword';
 import ProductManagement from './ProductManagement';
 import AccountManagement from './AccountManagement';
+import OrderList from './OrderList';
+import Revenue from './Revenue';
 
 const { TabPane } = Tabs;
 
@@ -120,7 +122,7 @@ function MyProfile({
             </TabPane>
             {dataProfile?.profile?.account?.roles[0]?.name === 'USER' && (
               <TabPane tab="List of orders placed" key="3">
-                There&apos;s nothing here
+                <OrderList />
               </TabPane>
             )}
             {dataProfile?.profile?.account?.roles[0]?.name === 'ADMIN' && (
@@ -134,6 +136,11 @@ function MyProfile({
             {dataProfile?.profile?.account?.roles[0]?.name === 'ADMIN' && (
               <TabPane tab="Account Management" key="6">
                 <AccountManagement />
+              </TabPane>
+            )}
+            {dataProfile?.profile?.account?.roles[0]?.name === 'ADMIN' && (
+              <TabPane tab="Revenue Statistics" key="7">
+                <Revenue />
               </TabPane>
             )}
           </Tabs>

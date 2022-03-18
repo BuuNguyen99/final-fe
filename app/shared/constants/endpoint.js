@@ -28,6 +28,12 @@ export const ENDPOINT = {
     GET_CART_PRODUCT: '/api/cart/getAll',
     ADD_TO_CART_API: '/api/cart/addItem',
     DELETE_ITEM_CART_API: '/api/cart/removeItem',
+    VERIFY_ACCOUNT_API: '/api/auth/verify',
+    BUY_CART_API: '/api/product/order/createOrder',
+    GET_LIST_ORDER_API: '/api/product/order/getAll',
+    GET_LIST_FIVE_PRODUCT: '/api/product/order/statistical/top5product',
+    GET_LIST_FIVE_USER: '/api/product/order/statistical/top5user',
+    GET_LIST_TOTAL_REVENUE: '/api/product/order/statistical/year',
   },
   ROUTING: {
     AUTH: '/auth',
