@@ -26,6 +26,7 @@ import {
 } from '../HomePage/actions';
 import { formatPriceVND } from '../../utils/common';
 import { getCartProduct } from '../Auth/actions';
+import { makeSelectMyProfile } from '../Auth/selectors';
 
 const key = 'home';
 
@@ -37,6 +38,7 @@ function BuyProduct({
   onAddCommentProduct,
   onAddToCart,
   onGetCartProduct,
+  dataProfile,
 }) {
   const history = useHistory();
   const { TabPane } = Tabs;
@@ -164,39 +166,41 @@ function BuyProduct({
               <div className="buy-product__content">
                 <p className="text">{dataDetailProduct?.data?.metaTitle}</p>
               </div>
-              <div className="buy-product__add">
-                <div className="quantity">
-                  <InputSpinner
-                    className="abc"
-                    type="real"
-                    precision={2}
-                    max={dataDetailProduct?.data?.quantity}
-                    min={0}
-                    step={1}
-                    value={number}
-                    onChange={num => setNumber(num)}
-                    size="sm"
-                  />
+              {dataProfile?.profile?.account?.roles[0]?.name === 'USER' && (
+                <div className="buy-product__add">
+                  <div className="quantity">
+                    <InputSpinner
+                      className="abc"
+                      type="real"
+                      precision={2}
+                      max={dataDetailProduct?.data?.quantity}
+                      min={0}
+                      step={1}
+                      value={number}
+                      onChange={num => setNumber(num)}
+                      size="sm"
+                    />
+                  </div>
+                  <Button
+                    danger
+                    size="large"
+                    className="add-cart"
+                    onClick={() =>
+                      handleAddToCart(number, dataDetailProduct?.data?.id)
+                    }
+                  >
+                    Add To Cart
+                  </Button>
+                  <Button
+                    type="primary"
+                    danger
+                    size="large"
+                    onClick={handleBuyNow}
+                  >
+                    Buy Now
+                  </Button>
                 </div>
-                <Button
-                  danger
-                  size="large"
-                  className="add-cart"
-                  onClick={() =>
-                    handleAddToCart(number, dataDetailProduct?.data?.id)
-                  }
-                >
-                  Add To Cart
-                </Button>
-                <Button
-                  type="primary"
-                  danger
-                  size="large"
-                  onClick={handleBuyNow}
-                >
-                  Buy Now
-                </Button>
-              </div>
+              )}
             </div>
           </div>
           <div className="buy-product__info row">
@@ -205,18 +209,20 @@ function BuyProduct({
                 <TabPane tab="Description" key="1">
                   <Description content={dataDetailProduct?.data?.content} />
                 </TabPane>
-                <TabPane
-                  tab={`Evaluate (${dataComment?.data?.length})`}
-                  key="2"
-                >
-                  <Evaluate
-                    id={dataDetailProduct?.data?.id}
-                    dataComment={dataComment}
-                    onAddCommentProduct={onAddCommentProduct}
-                    onGetCommentProduct={onGetCommentProduct}
-                    title={dataDetailProduct?.data?.title}
-                  />
-                </TabPane>
+                {dataProfile?.profile?.account?.roles[0]?.name === 'USER' && (
+                  <TabPane
+                    tab={`Evaluate (${dataComment?.data?.length})`}
+                    key="2"
+                  >
+                    <Evaluate
+                      id={dataDetailProduct?.data?.id}
+                      dataComment={dataComment}
+                      onAddCommentProduct={onAddCommentProduct}
+                      onGetCommentProduct={onGetCommentProduct}
+                      title={dataDetailProduct?.data?.title}
+                    />
+                  </TabPane>
+                )}
               </Tabs>
             </div>
           </div>
@@ -229,6 +235,7 @@ function BuyProduct({
 }
 
 const mapStateToProps = createStructuredSelector({
+  dataProfile: makeSelectMyProfile(),
   dataDetailProduct: makeSelectDetailProduct(),
   dataComment: makeSelectDataComment(),
 });

@@ -115,7 +115,7 @@ function Header({
           </div>
         </>
       ) : (
-        'no data'
+        <p className="font-italic">There are no products listed yet</p>
       )}
     </div>
   );

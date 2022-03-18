@@ -163,7 +163,8 @@ const authReducer = (state = initialState, action) =>
         draft.dataPopular.isFetching = true;
         break;
       case SUCCESS(GET_LIST_POPULAR_PRODUCT):
-        draft.dataPopular.data = action.data;
+        action.data.sort((a, b) => a.averageRating - b.averageRating);
+        draft.dataPopular.data = action.data.reverse();
         draft.dataPopular.isFetching = false;
         break;
       case FAILURE(GET_LIST_POPULAR_PRODUCT):

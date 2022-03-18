@@ -41,7 +41,7 @@ function PageProductPopular({ dataPopular, onGetViewHomeProduct }) {
         {!dataPopular?.isFetching && (
           <div className="product-list-item">
             <div className="row">
-              {dataPopular?.data.map((el, index) => (
+              {dataPopular?.data?.slice(0, 12).map((el, index) => (
                 <Link
                   to={`/products/${el.slug}`}
                   className="col-3 item-show"
