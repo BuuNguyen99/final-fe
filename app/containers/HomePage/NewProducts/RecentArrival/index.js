@@ -8,7 +8,7 @@ function RecentArrival({ dataPopular }) {
     <>
       {!dataPopular?.isFetching && (
         <div className="recent-arrival row">
-          {dataPopular.data.map((el, index) => (
+          {dataPopular?.data?.slice(0, 6).map((el, index) => (
             <Link
               to={`/products/${el.slug}`}
               className="col-4 item-show"
