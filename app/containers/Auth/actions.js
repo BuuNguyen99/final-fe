@@ -14,6 +14,7 @@ import {
   GET_LIST_PRODUCT,
   VERIFY_ACCOUNT,
   BUY_CART,
+  BUY_BANK,
 } from 'containers/Auth/constants';
 
 export function registerAccount(data, callBack) {
@@ -118,5 +119,12 @@ export function buyCart(dataCart, callBack) {
     type: REQUEST(BUY_CART),
     dataCart,
     callBack,
+  };
+}
+
+export function buyBank(dataBank) {
+  return {
+    type: REQUEST(BUY_BANK),
+    dataBank,
   };
 }

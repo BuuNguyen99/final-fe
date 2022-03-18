@@ -18,6 +18,7 @@ import {
   GET_LIST_PRODUCT,
   VERIFY_ACCOUNT,
   BUY_CART,
+  BUY_BANK,
 } from 'containers/Auth/constants';
 
 const { API } = ENDPOINT;
@@ -274,6 +275,27 @@ export function* buyCartSaga({ dataCart, callBack }) {
   }
 }
 
+function buyBankApi(data) {
+  return Api.post(
+    API.ORDER_BANK,
+    {},
+    {
+      params: {
+        ...data,
+      },
+    },
+  );
+}
+
+export function* buyBankSaga({ dataBank }) {
+  try {
+    yield call(buyBankApi, dataBank);
+    yield put({ type: SUCCESS(BUY_BANK) });
+  } catch (error) {
+    yield put({ type: SUCCESS(BUY_BANK), error });
+  }
+}
+
 export default function* authData() {
   yield takeLatest(REQUEST(REMOVE_TOKEN), signOut);
   yield takeLatest(REQUEST(GET_PROFILE), getMyProfile);
@@ -289,4 +311,5 @@ export default function* authData() {
   yield takeLatest(REQUEST(GET_LIST_PRODUCT), getViewHomeProduct);
   yield takeLatest(REQUEST(VERIFY_ACCOUNT), verifyAccountSaga);
   yield takeLatest(REQUEST(BUY_CART), buyCartSaga);
+  yield takeLatest(REQUEST(BUY_BANK), buyBankSaga);
 }

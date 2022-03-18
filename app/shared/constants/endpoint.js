@@ -34,6 +34,7 @@ export const ENDPOINT = {
     GET_LIST_FIVE_PRODUCT: '/api/product/order/statistical/top5product',
     GET_LIST_FIVE_USER: '/api/product/order/statistical/top5user',
     GET_LIST_TOTAL_REVENUE: '/api/product/order/statistical/year',
+    ORDER_BANK: '/api/product/order/info',
   },
   ROUTING: {
     AUTH: '/auth',

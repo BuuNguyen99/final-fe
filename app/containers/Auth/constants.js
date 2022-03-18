@@ -13,3 +13,4 @@ export const DELETE_ITEM_CART = 'productTechnology/Auth/DELETE_ITEM_CART';
 export const GET_LIST_PRODUCT = 'productTechnology/Auth/GET_LIST_PRODUCT';
 export const VERIFY_ACCOUNT = 'productTechnology/Auth/VERIFY_ACCOUNT';
 export const BUY_CART = 'productTechnology/Auth/BUY_CART';
+export const BUY_BANK = 'productTechnology/Auth/BUY_BANK';

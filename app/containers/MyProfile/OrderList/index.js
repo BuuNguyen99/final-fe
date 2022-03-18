@@ -47,8 +47,11 @@ function OrderList({ dataGetListOrder, onGetListOrder }) {
                   <div className="col-3">
                     <p className="header-item">Product</p>
                   </div>
-                  <div className="col-2">
+                  <div className="col-1">
                     <p className="header-item">note</p>
+                  </div>
+                  <div className="col-1">
+                    <p className="header-item">Status</p>
                   </div>
                   <div className="col-1">
                     <p className="header-item">Amount</p>
@@ -78,8 +81,11 @@ function OrderList({ dataGetListOrder, onGetListOrder }) {
                         <p>{el?.name}</p>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col-1">
                       <p>{item?.content || ''}</p>
+                    </div>
+                    <div className="col-1">
+                      <p>{item?.status || ''}</p>
                     </div>
                     <div className="col-1">
                       <p>{el?.quantity}</p>
